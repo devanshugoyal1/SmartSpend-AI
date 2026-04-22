@@ -1,0 +1,207 @@
+/* ============================================================
+   SmartSpend AI — Responsive CSS
+   Add to every page's <head>:
+   <link rel="stylesheet" href="responsive.css">
+   ============================================================ */
+
+/* ---- MOBILE BASE ---- */
+@media (max-width: 1023px) {
+
+  /* Sidebar hidden by default on mobile */
+  aside {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 50 !important;
+    position: fixed !important;
+    width: 280px !important;
+  }
+
+  /* Main content full width on mobile */
+  main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Header adjustments */
+  header {
+    left: 0 !important;
+    width: 100% !important;
+    padding-left: 56px !important; /* Space for hamburger */
+  }
+
+  /* KPI cards — 2 columns on tablet, 1 on mobile */
+  .grid.xl\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Charts — stack on mobile */
+  .lg\:col-span-6,
+  .lg\:col-span-4 {
+    grid-column: span 10 !important;
+  }
+
+  /* Tables — horizontal scroll */
+  table {
+    min-width: 600px;
+  }
+  .overflow-hidden:has(table) {
+    overflow-x: auto !important;
+  }
+
+  /* Budget grid */
+  .xl\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Goals grid */
+  .xl\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Analytics 3-col */
+  .md\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reports charts */
+  .lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Padding reduction on mobile */
+  .px-10 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  /* KPI cards — 1 column on small mobile */
+  .grid.xl\:grid-cols-4,
+  .grid.md\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Summary cards in transactions */
+  .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Budget summary cards */
+  .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce padding */
+  .px-8, .px-10 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  .py-8 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* Header search hidden on very small screens */
+  header .flex-1 {
+    display: none !important;
+  }
+
+  /* Font sizes */
+  h2.text-3xl, h2.text-4xl {
+    font-size: 1.5rem !important;
+  }
+
+  /* AI Chat panel */
+  .lg\:col-span-4 {
+    height: 400px !important;
+    position: relative !important;
+    top: auto !important;
+  }
+}
+
+/* ---- TABLET (768px - 1023px) ---- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid.xl\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .grid.md\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ---- DESKTOP (1024px+) ---- */
+@media (min-width: 1024px) {
+  #hamburgerBtn {
+    display: none !important;
+  }
+  #sidebarOverlay {
+    display: none !important;
+  }
+  #sidebarCloseBtn {
+    display: none !important;
+  }
+  aside {
+    transform: translateX(0) !important;
+  }
+}
+
+/* ---- HAMBURGER BUTTON ---- */
+#hamburgerBtn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 60;
+  display: none;
+  width: 40px;
+  height: 40px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ---- SIDEBAR CLOSE BTN ---- */
+#sidebarCloseBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: none;
+}
+
+/* ---- OVERLAY ---- */
+#sidebarOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+}
+
+/* ---- SMOOTH TRANSITIONS ---- */
+aside {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ---- SCROLLABLE TABLE WRAPPER ---- */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- TOUCH IMPROVEMENTS ---- */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- MODAL RESPONSIVE ---- */
+@media (max-width: 640px) {
+  .max-w-lg, .max-w-md {
+    margin: 1rem !important;
+    width: calc(100% - 2rem) !important;
+  }
+}

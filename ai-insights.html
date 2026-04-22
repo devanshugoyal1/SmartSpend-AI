@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Insights | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{ colors:{
+      "primary":"#6366f1","background":"#0f172a","surface":"#1e293b",
+      "surface-variant":"#334155","on-surface":"#ffffff","on-surface-variant":"#94a3b8",
+      "success":"#22c55e","danger":"#ef4444","warning":"#f59e0b","border-color":"#334155"
+    }, fontFamily:{"sans":["Inter","system-ui"],"mono-data":["JetBrains Mono","monospace"]},
+    borderRadius:{"card":"12px","btn":"8px"} } }
+  }
+</script>
+<style>
+  .glass-card { background:#1e293b; border:1px solid #334155; }
+  .indigo-glow { box-shadow:0 0 40px -10px rgba(99,102,241,0.2); }
+  .material-symbols-outlined {
+    font-family:'Material Symbols Outlined' !important;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-size:20px !important; line-height:1 !important;
+    display:inline-flex !important; align-items:center;
+    width:20px !important; height:20px !important;
+    overflow:hidden !important; flex-shrink:0;
+  }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  #chatMessages { scroll-behavior:smooth; }
+  .typing-dot { animation: blink 1.4s infinite; }
+  .typing-dot:nth-child(2) { animation-delay:0.2s; }
+  .typing-dot:nth-child(3) { animation-delay:0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="bg-[#0f172a] text-white font-sans selection:bg-primary/30 min-h-screen flex">
+
+<!-- Sidebar -->
+<aside class="w-64 h-screen sticky left-0 top-0 bg-[#0f172a] border-r border-slate-700/50 flex flex-col z-50">
+  <div class="px-6 py-5 border-b border-slate-700/50">
+    <a href="index.html" class="flex items-center gap-2 mb-2" style="text-decoration:none;">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:28px;width:28px;object-fit:contain;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'">
+      <span style="font-size:16px;font-weight:700;color:#f8fafc;font-family:'Manrope',sans-serif;white-space:nowrap;">SmartSpend AI</span>
+    </a>
+    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#6366f1] text-white">✨ Pro Plan</span>
+  </div>
+  <nav class="flex-1 px-3 py-3 space-y-1 overflow-y-auto no-scrollbar">
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="transactions.html">
+      <span class="material-symbols-outlined">credit_card</span><span class="text-sm font-medium">Transactions</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="analytics.html">
+      <span class="material-symbols-outlined">monitoring</span><span class="text-sm font-medium">Analytics</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="budget-manager.html">
+      <span class="material-symbols-outlined">account_balance_wallet</span><span class="text-sm font-medium">Budgets</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="savings-goals.html">
+      <span class="material-symbols-outlined">emoji_events</span><span class="text-sm font-medium">Goals</span>
+    </a>
+    <a class="flex items-center gap-3 bg-[#6366f1] text-white font-semibold border-l-[3px] border-white px-4 py-2.5 rounded-lg" href="ai-insights.html">
+      <span class="material-symbols-outlined">auto_awesome</span><span class="text-sm font-semibold">AI Insights</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="reports.html">
+      <span class="material-symbols-outlined">description</span><span class="text-sm font-medium">Reports</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="settings.html">
+      <span class="material-symbols-outlined">settings</span><span class="text-sm font-medium">Settings</span>
+    </a>
+  </nav>
+  <div class="px-4 py-4 space-y-4">
+    <div class="p-4 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#4f46e5] shadow-lg">
+      <p class="text-sm font-bold text-white mb-1">Unlock advanced AI</p>
+      <p class="text-xs text-white/80 mb-3">Get deeper insights and predictive forecasting.</p>
+      <button class="w-full bg-white text-[#6366f1] py-1.5 rounded-lg text-xs font-bold">Upgrade →</button>
+    </div>
+    <div class="flex items-center gap-3 px-2 pt-3 border-t border-slate-700/50">
+      <img src="assets/avatar.png" alt="Devanshu Goyal"
+        onerror="this.src='https://ui-avatars.com/api/?name=Devanshu+Goyal&background=6366f1&color=fff&size=40'"
+        class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+      <div class="overflow-hidden">
+        <p class="text-sm font-bold text-white truncate" data-user-name>Devanshu Goyal</p>
+        <p class="text-xs text-slate-400 truncate" data-user-email>devanshu@example.com</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0">
+
+  <!-- Header -->
+  <header class="sticky top-0 w-full z-40 bg-[#0f172a]/80 backdrop-blur-xl flex justify-between items-center px-10 py-5 border-b border-slate-700/50">
+    <div>
+      <h2 class="text-2xl font-bold text-white flex items-center gap-2">🤖 AI Insights</h2>
+      <p class="text-xs text-slate-400">Powered by Gemini AI · Updated just now</p>
+    </div>
+    <div class="flex-1 max-w-md mx-8">
+      <div class="relative">
+        <input class="bg-slate-800 border border-slate-700 rounded-full px-5 py-2 text-sm w-full outline-none focus:ring-1 focus:ring-indigo-500 text-white placeholder:text-slate-500" placeholder="Search insights..." type="text"/>
+        <span class="material-symbols-outlined absolute right-4 top-2 text-slate-500">search</span>
+      </div>
+    </div>
+    <button class="relative text-slate-400 hover:text-white transition-colors p-2">
+      <span class="material-symbols-outlined" style="font-size:24px;width:24px;height:24px;">notifications</span>
+      <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0f172a]"></span>
+    </button>
+  </header>
+
+  <!-- Content -->
+  <div class="px-10 py-8 space-y-8 max-w-7xl mx-auto w-full pb-24">
+
+    <!-- Health Score -->
+    <section class="glass-card rounded-card p-8 indigo-glow flex flex-col md:flex-row gap-8 items-center">
+      <div class="relative w-36 h-36 flex-shrink-0">
+        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 144 144">
+          <circle cx="72" cy="72" fill="transparent" r="60" stroke="#334155" stroke-width="8"/>
+          <circle id="scoreRing" cx="72" cy="72" fill="transparent" r="60" stroke="#22c55e"
+            stroke-dasharray="377" stroke-dashoffset="96" stroke-linecap="round" stroke-width="10"/>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span id="scoreNum" class="text-4xl font-extrabold font-mono-data">74</span>
+          <span id="scoreLabel" class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Good</span>
+        </div>
+      </div>
+      <div class="flex-1 space-y-4">
+        <div class="flex items-center gap-3 text-indigo-400">
+          <span class="material-symbols-outlined" style="font-size:28px;width:28px;height:28px;font-variation-settings:'FILL' 1;">smart_toy</span>
+          <h3 class="text-xl font-bold">Your Financial Health Score</h3>
+        </div>
+        <div id="scoreTags" class="flex flex-wrap gap-2"></div>
+        <p id="scoreSummary" class="text-slate-400 leading-relaxed">Analyzing your financial data...</p>
+      </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div id="insightAnomaly" class="glass-card rounded-card p-6 border-l-4 border-red-500 flex flex-col h-full hover:-translate-y-1 transition-transform">
+        <div class="flex items-center gap-3 mb-4 text-red-400">
+          <span class="material-symbols-outlined">warning</span>
+          <h4 class="font-bold text-sm uppercase tracking-wider">Spending Anomaly</h4>
+        </div>
+        <p id="anomalyText" class="text-sm text-slate-400 flex-1 mb-4 leading-relaxed">Analyzing...</p>
+        <button onclick="location.href='budget-manager.html'" class="w-full py-2.5 rounded-lg border border-slate-700 hover:bg-red-500 hover:border-red-500 hover:text-white transition-all text-xs font-bold uppercase">
+          Set Budget Alert
+        </button>
+      </div>
+      <div id="insightPositive" class="glass-card rounded-card p-6 border-l-4 border-green-500 flex flex-col h-full hover:-translate-y-1 transition-transform">
+        <div class="flex items-center gap-3 mb-4 text-green-400">
+          <span class="material-symbols-outlined">check_circle</span>
+          <h4 id="positiveTitle" class="font-bold text-sm uppercase tracking-wider">Budget Champion</h4>
+        </div>
+        <p id="positiveText" class="text-sm text-slate-400 flex-1 mb-4 leading-relaxed">Analyzing...</p>
+        <div id="positiveBar" class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden">
+          <div class="h-full bg-green-500 rounded-full" style="width:64%"></div>
+        </div>
+      </div>
+      <div class="glass-card rounded-card p-6 border-l-4 border-indigo-500 flex flex-col h-full hover:-translate-y-1 transition-transform">
+        <div class="flex items-center gap-3 mb-4 text-indigo-400">
+          <span class="material-symbols-outlined">lightbulb</span>
+          <h4 class="font-bold text-sm uppercase tracking-wider">Subscription Audit</h4>
+        </div>
+        <p id="subscriptionText" class="text-sm text-slate-400 flex-1 mb-4 leading-relaxed">Checking your subscriptions...</p>
+        <button onclick="location.href='transactions.html'" class="w-full py-2.5 rounded-lg border border-slate-700 hover:bg-indigo-500 hover:border-indigo-500 hover:text-white transition-all text-xs font-bold uppercase">
+          Review Subscriptions
+        </button>
+      </div>
+    </section>
+
+    <!-- Tips + Chat -->
+    <div class="grid grid-cols-1 lg:grid-cols-10 gap-8">
+
+      <!-- Left: Tips + Prediction -->
+      <div class="lg:col-span-6 space-y-8">
+
+        <!-- Tips -->
+        <div>
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span class="w-2 h-8 bg-indigo-500 rounded-full inline-block"></span>
+            Personalized Tips for You
+          </h3>
+          <div id="tipsList" class="space-y-3"></div>
+        </div>
+
+        <!-- Prediction -->
+        <div>
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span class="w-2 h-8 bg-green-500 rounded-full inline-block"></span>
+            Next Month Prediction
+          </h3>
+          <div class="glass-card rounded-card p-6">
+            <div class="flex justify-between items-end mb-6">
+              <div>
+                <p class="text-xs text-slate-400 uppercase font-bold tracking-widest mb-1" id="predLabel">Predicted Expenses</p>
+                <div class="flex items-baseline gap-2">
+                  <span id="predAmount" class="text-4xl font-extrabold font-mono-data">₹0</span>
+                  <span id="predChange" class="text-green-400 font-bold text-sm flex items-center gap-1"></span>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 text-xs font-bold text-slate-400 uppercase">
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-orange-500 rounded-full inline-block"></span>Actual</div>
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-indigo-400/60 rounded-full inline-block"></span>Predicted</div>
+              </div>
+            </div>
+            <div id="predChart" class="h-48 flex items-end justify-between gap-4 px-2"></div>
+            <p class="text-xs text-slate-500 mt-4 italic flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:14px;width:14px;height:14px;">info</span>
+              Lighter bars show predicted spend if you follow AI recommendations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Chat -->
+      <div class="lg:col-span-4 flex flex-col" style="height:calc(100vh - 200px);position:sticky;top:100px;">
+        <div class="glass-card rounded-card overflow-hidden flex flex-col h-full shadow-2xl">
+          <div class="p-5 border-b border-slate-700 bg-slate-800/30">
+            <div class="flex items-center gap-3 mb-1">
+              <div class="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white" style="font-size:18px;width:18px;height:18px;">psychology</span>
+              </div>
+              <h3 class="font-bold text-lg">Ask Anything</h3>
+            </div>
+            <p class="text-xs text-slate-400">Personalized financial assistant</p>
+          </div>
+
+          <!-- Messages -->
+          <div id="chatMessages" class="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar">
+            <!-- Initial AI message -->
+            <div class="flex gap-3">
+              <div class="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-white" style="font-size:14px;width:14px;height:14px;">smart_toy</span>
+              </div>
+              <div class="bg-slate-700 rounded-xl rounded-tl-none p-3 text-sm text-slate-300 leading-relaxed max-w-[85%]" id="welcomeMsg">
+                Hi Devanshu! I analyzed your financial data. How can I help you save more today?
+              </div>
+            </div>
+          </div>
+
+          <!-- Suggested Questions -->
+          <div class="px-5 pb-3 space-y-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Quick Questions</p>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="askQuestion('How much did I spend on food this month?')"
+                class="px-3 py-1.5 rounded-full border border-slate-700 hover:border-indigo-500 hover:text-indigo-400 text-[11px] font-medium transition-all text-slate-400">
+                🍕 Food spending?
+              </button>
+              <button onclick="askQuestion('What is my savings rate this month?')"
+                class="px-3 py-1.5 rounded-full border border-slate-700 hover:border-indigo-500 hover:text-indigo-400 text-[11px] font-medium transition-all text-slate-400">
+                💰 Savings rate?
+              </button>
+              <button onclick="askQuestion('Which category did I overspend on?')"
+                class="px-3 py-1.5 rounded-full border border-slate-700 hover:border-indigo-500 hover:text-indigo-400 text-[11px] font-medium transition-all text-slate-400">
+                ⚠️ Overspend?
+              </button>
+              <button onclick="askQuestion('How much did I earn this month?')"
+                class="px-3 py-1.5 rounded-full border border-slate-700 hover:border-indigo-500 hover:text-indigo-400 text-[11px] font-medium transition-all text-slate-400">
+                💼 Income?
+              </button>
+            </div>
+          </div>
+
+          <!-- Input -->
+          <div class="p-4 border-t border-slate-700">
+            <div class="relative flex gap-2">
+              <input id="chatInput" class="flex-1 bg-[#0f172a] border border-slate-700 rounded-xl pl-4 pr-4 py-2.5 text-sm outline-none focus:ring-1 focus:ring-indigo-500 placeholder:text-slate-500 text-white"
+                placeholder="Ask your financial AI..."
+                type="text"
+                onkeydown="if(event.key==='Enter') sendChat()"/>
+              <button onclick="sendChat()" class="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center hover:bg-indigo-400 transition-colors">
+                <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">send</span>
+              </button>
+            </div>
+            <p class="text-[10px] text-center text-slate-600 mt-2 font-bold tracking-wider">⚡ POWERED BY SMARTSPEND AI</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ============================================================
+// SmartSpend AI — AI Insights Logic
+// Reads from localStorage: smartspend_transactions
+// ============================================================
+
+const fmt = n => '₹' + Math.abs(n).toLocaleString('en-IN', {minimumFractionDigits:0});
+
+function loadTxns() {
+  return JSON.parse(localStorage.getItem('smartspend_transactions') || '[]');
+}
+
+function getThisMonth(txns) {
+  const now = new Date();
+  return txns.filter(t => {
+    const d = new Date(t.date);
+    return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  });
+}
+
+function getCatMap(txns) {
+  const map = {};
+  txns.filter(t=>t.type==='expense').forEach(t => map[t.category]=(map[t.category]||0)+t.amount);
+  return map;
+}
+
+// ---- Health Score ----
+function calcScore(income, expense, savings) {
+  if (income === 0) return 50;
+  const savingsPct = (savings / income) * 100;
+  let score = 50;
+  if (savingsPct >= 30) score = 90;
+  else if (savingsPct >= 20) score = 80;
+  else if (savingsPct >= 10) score = 70;
+  else if (savingsPct >= 0)  score = 60;
+  else score = 40;
+  return Math.min(Math.max(score, 20), 95);
+}
+
+function renderHealthScore(income, expense) {
+  const savings = income - expense;
+  const score = calcScore(income, expense, savings);
+  const savingsPct = income > 0 ? ((savings/income)*100).toFixed(1) : 0;
+
+  document.getElementById('scoreNum').textContent = score;
+
+  let label, color;
+  if (score >= 80) { label='Excellent'; color='#22c55e'; }
+  else if (score >= 65) { label='Good'; color='#6366f1'; }
+  else if (score >= 50) { label='Fair'; color='#f59e0b'; }
+  else { label='Needs Work'; color='#ef4444'; }
+
+  document.getElementById('scoreLabel').textContent = label;
+  const ring = document.getElementById('scoreRing');
+  ring.setAttribute('stroke', color);
+  const circ = 2 * Math.PI * 60;
+  ring.setAttribute('stroke-dashoffset', (circ * (1 - score/100)).toFixed(1));
+
+  // Tags
+  const tags = [];
+  if (savings >= 0) tags.push({text:'✅ Savings on track', cls:'bg-green-500/10 text-green-400 border-green-500/20'});
+  else tags.push({text:'⚠️ Overspending', cls:'bg-red-500/10 text-red-400 border-red-500/20'});
+  tags.push({text:`💡 ${savingsPct}% saved`, cls:'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'});
+  if (income === 0) tags.push({text:'📊 Add income data', cls:'bg-amber-500/10 text-amber-400 border-amber-500/20'});
+
+  document.getElementById('scoreTags').innerHTML = tags.map(t =>
+    `<span class="px-3 py-1 rounded-full ${t.cls} text-xs font-semibold border">${t.text}</span>`
+  ).join('');
+
+  const catMap = getCatMap(getThisMonth(loadTxns()));
+  const topCat = Object.entries(catMap).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('scoreSummary').innerHTML = income > 0
+    ? `This month income: <strong class="text-white">${fmt(income)}</strong>, expenses: <strong class="text-red-400">${fmt(expense)}</strong>. Savings: <strong class="${savings>=0?'text-green-400':'text-red-400'}">${fmt(savings)}</strong> (${savingsPct}%). ${topCat?`Top spend: <strong class="text-white">${topCat[0]}</strong> at <strong class="text-white">${fmt(topCat[1])}</strong>.`:''}`
+    : 'Add income and expense transactions to get your personalized AI financial analysis.';
+}
+
+// ---- Key Insights ----
+function renderInsights(txns) {
+  const month = getThisMonth(txns);
+  const catMap = getCatMap(month);
+  const sorted = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+
+  // Anomaly — top overspent category
+  if (sorted.length) {
+    const [cat, amt] = sorted[0];
+    const budgets = JSON.parse(localStorage.getItem('smartspend_budgets')||'{}');
+    const limit = budgets[cat] || 10000;
+    const pct = ((amt/limit)*100).toFixed(0);
+    document.getElementById('anomalyText').innerHTML =
+      `Your highest spend is <strong class="text-white">${cat}</strong> at <strong class="text-red-400 font-mono-data">${fmt(amt)}</strong> (${pct}% of ${fmt(limit)} budget). ${pct>80?'⚠️ Consider reducing this category.':'Monitor this category.'}`;
+  } else {
+    document.getElementById('anomalyText').textContent = 'No expense data this month yet. Add transactions to get insights!';
+  }
+
+  // Positive — best performing budget category
+  const budgets = JSON.parse(localStorage.getItem('smartspend_budgets')||'{"🚗 Transport":5000}');
+  let bestCat = null, bestPct = 200;
+  Object.entries(budgets).forEach(([cat,limit]) => {
+    const spent = catMap[cat] || 0;
+    const pct = (spent/limit)*100;
+    if (pct < bestPct && pct > 0) { bestPct = pct; bestCat = {cat, spent, limit, pct}; }
+  });
+  if (bestCat) {
+    document.getElementById('positiveTitle').textContent = `${bestCat.cat} On Track! 🎊`;
+    document.getElementById('positiveText').innerHTML =
+      `You spent only <strong class="text-white font-mono-data">${fmt(bestCat.spent)}</strong> on ${bestCat.cat} vs your <strong class="text-white">${fmt(bestCat.limit)}</strong> budget. Saved <strong class="text-green-400 font-mono-data">${fmt(bestCat.limit - bestCat.spent)}</strong> extra this month!`;
+    document.getElementById('positiveBar').innerHTML =
+      `<div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden"><div class="h-full bg-green-500 rounded-full transition-all" style="width:${bestCat.pct.toFixed(0)}%"></div></div>`;
+  } else {
+    document.getElementById('positiveText').textContent = 'Keep tracking transactions to see your best performing budget categories!';
+  }
+
+  // Subscriptions
+  const entertainment = catMap['🎬 Entertainment'] || 0;
+  document.getElementById('subscriptionText').innerHTML = entertainment > 0
+    ? `You spent <strong class="text-white font-mono-data">${fmt(entertainment)}</strong> on entertainment/subscriptions this month. Review to see if all are being used.`
+    : 'No entertainment spending tracked yet. Add subscription transactions to audit them.';
+}
+
+// ---- Tips ----
+function renderTips(income, expense) {
+  const catMap = getCatMap(getThisMonth(loadTxns()));
+  const savings = income - expense;
+
+  const tips = [];
+  const foodAmt = catMap['🍕 Food'] || catMap['🍔 Dining'] || 0;
+  if (foodAmt > 5000) {
+    tips.push({ emoji:'🍕', title:'Optimize Food Delivery', desc:`Reduce food delivery to 2x/week`, savings: Math.round(foodAmt * 0.3), impact: 85 });
+  }
+  tips.push({ emoji:'💡', title:'Switch Electricity Provider', desc:'Estimated savings based on usage patterns', savings:400, impact:60, badge:'87% confidence' });
+  if (income > 0) {
+    const sipAmt = Math.round(savings * 0.3 / 1000) * 1000;
+    tips.push({ emoji:'🎯', title:'Start/Boost SIP Investment', desc:`Put ${fmt(sipAmt || 5000)} in SIP this month`, savings:0, impact:70, badge:'Long-term wealth' });
+  }
+  if ((catMap['🛒 Shopping']||0) > 3000) {
+    tips.push({ emoji:'🛒', title:'Reduce Weekend Shopping', desc:'Shop on weekdays for better deals', savings: Math.round((catMap['🛒 Shopping']||0)*0.2), impact:50 });
+  }
+
+  const container = document.getElementById('tipsList');
+  container.innerHTML = tips.map(t => `
+  <div class="glass-card p-5 rounded-card hover:bg-slate-700/50 transition-colors">
+    <div class="flex justify-between items-start mb-3">
+      <div class="flex gap-4">
+        <div class="w-12 h-12 rounded-xl bg-slate-700 flex items-center justify-center text-2xl flex-shrink-0">${t.emoji}</div>
+        <div>
+          <h5 class="font-bold text-white">${t.title}</h5>
+          <p class="text-sm text-slate-400">${t.desc}</p>
+          ${t.badge ? `<span class="px-2 py-0.5 mt-1 inline-block rounded bg-indigo-500/20 text-indigo-400 text-[10px] font-bold">${t.badge}</span>` : ''}
+        </div>
+      </div>
+      ${t.savings > 0 ? `<span class="text-green-400 font-bold font-mono-data whitespace-nowrap">+${fmt(t.savings)}<span class="text-[10px] text-slate-400">/mo</span></span>` : ''}
+    </div>
+    <div class="space-y-1">
+      <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase">
+        <span>Potential Impact</span><span>${t.impact >= 75 ? 'High' : t.impact >= 50 ? 'Medium' : 'Low'}</span>
+      </div>
+      <div class="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
+        <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-green-400" style="width:${t.impact}%"></div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+// ---- Prediction Chart ----
+function renderPrediction(txns) {
+  const now = new Date();
+  const nextMonth = new Date(now.getFullYear(), now.getMonth()+1, 1);
+  const label = nextMonth.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  document.getElementById('predLabel').textContent = `Predicted Expenses (${label})`;
+
+  const month = getThisMonth(txns);
+  const catMap = getCatMap(month);
+  const total = Object.values(catMap).reduce((s,v)=>s+v,0);
+  const predicted = Math.round(total * 0.9); // 10% reduction with AI tips
+
+  document.getElementById('predAmount').textContent = fmt(predicted);
+
+  const change = total > 0 ? (((predicted-total)/total)*100).toFixed(0) : 0;
+  document.getElementById('predChange').innerHTML = total > 0
+    ? `<span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">${predicted<total?'arrow_downward':'arrow_upward'}</span>${Math.abs(change)}%`
+    : '';
+
+  // Top 4 categories chart
+  const top4 = Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const maxVal = top4.length ? Math.max(...top4.map(([,v])=>v)) : 1;
+
+  document.getElementById('predChart').innerHTML = top4.map(([cat,amt]) => {
+    const hPct = ((amt/maxVal)*100).toFixed(0);
+    const predPct = ((amt*0.8/maxVal)*100).toFixed(0);
+    const emoji = cat.split(' ')[0];
+    const shortName = cat.split(' ').slice(1,2).join('');
+    return `
+    <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+      <div class="flex items-end gap-1 w-full" style="height:85%">
+        <div class="flex-1 bg-orange-500 rounded-t-sm relative" style="height:${hPct}%">
+          <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-mono-data font-bold whitespace-nowrap">${fmt(amt).replace('₹','')}</span>
+        </div>
+        <div class="flex-1 bg-indigo-500/40 rounded-t-sm relative" style="height:${predPct}%">
+          <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-mono-data text-indigo-400 whitespace-nowrap">${fmt(Math.round(amt*0.8)).replace('₹','')}</span>
+        </div>
+      </div>
+      <span class="text-[10px] font-bold text-slate-400">${emoji} ${shortName}</span>
+    </div>`;
+  }).join('') || '<p class="text-slate-500 text-sm col-span-4 text-center">Add transactions to see predictions</p>';
+}
+
+// ---- Chat Logic ----
+function getFinancialContext() {
+  const txns = loadTxns();
+  const month = getThisMonth(txns);
+  const income  = month.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense = month.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const catMap  = getCatMap(month);
+  const savings = income - expense;
+  return { txns, month, income, expense, catMap, savings };
+}
+
+function generateAIResponse(question) {
+  const { income, expense, catMap, savings } = getFinancialContext();
+  const q = question.toLowerCase();
+
+  if (q.includes('food') || q.includes('swiggy') || q.includes('zomato')) {
+    const foodAmt = (catMap['🍕 Food']||0) + (catMap['🍔 Dining']||0);
+    return foodAmt > 0
+      ? `You've spent **${fmt(foodAmt)}** on food this month. ${foodAmt > 8000 ? `⚠️ This is quite high! Consider cooking at home more often.` : `That's reasonable! Keep it up.`}`
+      : `No food transactions found this month. Add some transactions to track your food spending!`;
+  }
+
+  if (q.includes('saving') || q.includes('save')) {
+    const pct = income > 0 ? ((savings/income)*100).toFixed(1) : 0;
+    return income > 0
+      ? `Your savings rate this month is **${pct}%** — you've saved **${fmt(savings)}** out of **${fmt(income)}** income. ${pct >= 20 ? '✅ Great job! Aim for 30%.' : '💡 Try to save at least 20% of income.'}`
+      : `Add income transactions to calculate your savings rate!`;
+  }
+
+  if (q.includes('income') || q.includes('earn') || q.includes('salary')) {
+    return income > 0
+      ? `Your total income this month is **${fmt(income)}**. Keep tracking all income sources for accurate insights!`
+      : `No income transactions found this month. Add your salary or other income to get insights.`;
+  }
+
+  if (q.includes('overspend') || q.includes('over') || q.includes('exceed')) {
+    const budgets = JSON.parse(localStorage.getItem('smartspend_budgets')||'{}');
+    const overSpent = Object.entries(catMap).filter(([cat,amt]) => budgets[cat] && amt > budgets[cat]);
+    return overSpent.length
+      ? `You've exceeded budget in: ${overSpent.map(([cat,amt])=>`**${cat}** by ${fmt(amt-(budgets[cat]||0))}`).join(', ')}. Visit Budget Manager to adjust limits!`
+      : `Great news! You haven't exceeded any budget limits this month. Keep it up! 🎉`;
+  }
+
+  if (q.includes('spend') || q.includes('expense') || q.includes('total')) {
+    const sorted = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+    return expense > 0
+      ? `Total expenses this month: **${fmt(expense)}**. Top categories: ${sorted.slice(0,3).map(([c,a])=>`${c} ${fmt(a)}`).join(', ')}.`
+      : `No expense data this month. Start adding transactions!`;
+  }
+
+  if (q.includes('afford') || q.includes('buy') || q.includes('purchase')) {
+    const numbers = question.match(/[\d,]+/g);
+    const amount = numbers ? parseInt(numbers[0].replace(',','')) : 0;
+    if (amount && savings > 0) {
+      return savings >= amount
+        ? `✅ Yes! You have **${fmt(savings)}** saved this month — you can afford **${fmt(amount)}**. You'll have **${fmt(savings-amount)}** left.`
+        : `⚠️ Your current savings of **${fmt(savings)}** are less than **${fmt(amount)}**. You'd need **${fmt(amount-savings)}** more. Consider waiting or reducing other expenses.`;
+    }
+    return `Share the amount you want to buy and I'll check if you can afford it based on your savings!`;
+  }
+
+  if (q.includes('tip') || q.includes('advice') || q.includes('suggest')) {
+    const topCat = Object.entries(catMap).sort((a,b)=>b[1]-a[1])[0];
+    return topCat
+      ? `💡 Top tip: Your biggest spend is **${topCat[0]}** at **${fmt(topCat[1])}**. Reducing it by 20% would save **${fmt(Math.round(topCat[1]*0.2))}** per month. Also consider setting up a budget alert!`
+      : `Add more transactions and I'll give you personalized savings tips!`;
+  }
+
+  // Default
+  const sorted = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  return income > 0
+    ? `Based on your data: Income **${fmt(income)}**, Expenses **${fmt(expense)}**, Savings **${fmt(savings)}**. ${sorted.length ? `Top spend: **${sorted[0][0]}** at **${fmt(sorted[0][1])}**.` : ''} Ask me anything about your finances!`
+    : `I need more transaction data to answer that accurately. Please add your income and expense transactions first!`;
+}
+
+function addMessage(text, isUser) {
+  const chat = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `flex gap-3 ${isUser ? 'justify-end' : ''}`;
+
+  if (isUser) {
+    div.innerHTML = `<div class="bg-indigo-500 text-white rounded-xl rounded-tr-none p-3 text-sm leading-relaxed max-w-[85%]">${text}</div>`;
+  } else {
+    div.innerHTML = `
+      <div class="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center shrink-0 mt-0.5">
+        <span class="material-symbols-outlined text-white" style="font-size:14px;width:14px;height:14px;">smart_toy</span>
+      </div>
+      <div class="bg-slate-700 rounded-xl rounded-tl-none p-3 text-sm text-slate-200 leading-relaxed max-w-[85%]">
+        ${text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')}
+      </div>`;
+  }
+
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function addTyping() {
+  const chat = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'flex gap-3';
+  div.id = 'typingIndicator';
+  div.innerHTML = `
+    <div class="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-white" style="font-size:14px;width:14px;height:14px;">smart_toy</span>
+    </div>
+    <div class="bg-slate-700 rounded-xl rounded-tl-none px-4 py-3 flex items-center gap-1">
+      <div class="w-2 h-2 bg-slate-400 rounded-full typing-dot"></div>
+      <div class="w-2 h-2 bg-slate-400 rounded-full typing-dot"></div>
+      <div class="w-2 h-2 bg-slate-400 rounded-full typing-dot"></div>
+    </div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typingIndicator')?.remove();
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addMessage(msg, true);
+  input.value = '';
+
+  addTyping();
+  setTimeout(() => {
+    removeTyping();
+    const reply = generateAIResponse(msg);
+    addMessage(reply, false);
+  }, 800 + Math.random() * 600);
+}
+
+function askQuestion(q) {
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+// ---- Init ----
+function init() {
+  const txns = loadTxns();
+  const month = getThisMonth(txns);
+  const income  = month.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense = month.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+
+  renderHealthScore(income, expense);
+  renderInsights(txns);
+  renderTips(income, expense);
+  renderPrediction(txns);
+
+  // Update welcome message
+  document.getElementById('welcomeMsg').textContent =
+    income > 0
+      ? `Hi Devanshu! Your income this month is ${fmt(income)} and savings are ${fmt(income-expense)}. How can I help you save more?`
+      : `Hi Devanshu! Add your income and expense transactions to get personalized AI financial insights. How can I help?`;
+}
+
+init();
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

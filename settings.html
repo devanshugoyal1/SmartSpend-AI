@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{ colors:{
+      "primary":"#6366f1","surface":"#0f172a","surface-container":"#1e293b",
+      "outline-variant":"#334155","on-surface":"#f8fafc","on-surface-variant":"#94a3b8",
+    }, fontFamily:{"headline":["Manrope"],"body":["Inter"]},
+    borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"} } }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-family:'Material Symbols Outlined' !important;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-size:20px !important; line-height:1 !important;
+    display:inline-flex !important; align-items:center;
+    width:20px !important; height:20px !important;
+    overflow:hidden !important; flex-shrink:0;
+  }
+  body { background-color:#0f172a; color:#f8fafc; font-family:'Inter',sans-serif; }
+  .glass-card { background:#1e293b; border:1px solid #334155; }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  @keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+  .toast-show { animation:slideIn 0.3s ease forwards; }
+  input[type="color"] { -webkit-appearance:none; border:none; padding:0; cursor:pointer; }
+  input[type="color"]::-webkit-color-swatch-wrapper { padding:0; }
+  input[type="color"]::-webkit-color-swatch { border:none; border-radius:6px; }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="flex min-h-screen">
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-6 right-6 z-[200] px-5 py-3 rounded-xl text-white font-semibold text-sm flex items-center gap-3 shadow-2xl">
+  <span class="material-symbols-outlined" id="toastIcon">check_circle</span>
+  <span id="toastMsg">Saved!</span>
+</div>
+
+<!-- Sidebar -->
+<aside class="w-64 h-screen fixed left-0 top-0 bg-[#0f172a] border-r border-slate-700/50 flex flex-col z-50">
+  <div class="px-6 py-5 border-b border-slate-700/50">
+    <a href="index.html" class="flex items-center gap-2 mb-2" style="text-decoration:none;">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:28px;width:28px;object-fit:contain;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'">
+      <span style="font-size:16px;font-weight:700;color:#f8fafc;font-family:'Manrope',sans-serif;white-space:nowrap;">SmartSpend AI</span>
+    </a>
+    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#6366f1] text-white">✨ Pro Plan</span>
+  </div>
+  <nav class="flex-1 px-3 py-3 space-y-1 overflow-y-auto no-scrollbar">
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="transactions.html">
+      <span class="material-symbols-outlined">credit_card</span><span class="text-sm font-medium">Transactions</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="analytics.html">
+      <span class="material-symbols-outlined">monitoring</span><span class="text-sm font-medium">Analytics</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="budget-manager.html">
+      <span class="material-symbols-outlined">account_balance_wallet</span><span class="text-sm font-medium">Budgets</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="savings-goals.html">
+      <span class="material-symbols-outlined">emoji_events</span><span class="text-sm font-medium">Goals</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="ai-insights.html">
+      <span class="material-symbols-outlined">auto_awesome</span><span class="text-sm font-medium">AI Insights</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="reports.html">
+      <span class="material-symbols-outlined">description</span><span class="text-sm font-medium">Reports</span>
+    </a>
+    <a class="flex items-center gap-3 bg-[#6366f1] text-white font-semibold border-l-[3px] border-white px-4 py-2.5 rounded-lg" href="settings.html">
+      <span class="material-symbols-outlined">settings</span><span class="text-sm font-semibold">Settings</span>
+    </a>
+  </nav>
+  <div class="px-4 py-4 space-y-4">
+    <div class="p-4 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#4f46e5]">
+      <p class="text-sm font-bold text-white mb-1">Unlock advanced AI</p>
+      <p class="text-xs text-white/80 mb-3">Get unlimited reports & insights</p>
+      <button class="w-full bg-white text-[#6366f1] py-1.5 rounded-lg text-xs font-bold">Upgrade →</button>
+    </div>
+    <div class="flex items-center gap-3 px-2 pt-3 border-t border-slate-700/50">
+      <img id="sidebarAvatar" src="assets/avatar.png" alt="Devanshu Goyal"
+        onerror="this.src='https://ui-avatars.com/api/?name=Devanshu+Goyal&background=6366f1&color=fff&size=40'"
+        class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+      <div class="overflow-hidden">
+        <p class="text-sm font-bold text-white truncate" data-user-name>Devanshu Goyal</p>
+        <p class="text-xs text-slate-400 truncate" data-user-email>devanshu@example.com</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 flex-1 min-h-screen bg-[#0f172a]">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-[#0f172a]/80 backdrop-blur-md flex items-center justify-between px-10 py-4 border-b border-slate-700/50">
+    <div>
+      <h2 class="text-xl font-bold text-white">Settings</h2>
+      <p class="text-xs text-slate-400">Manage your account and preferences</p>
+    </div>
+    <button class="relative p-2 text-slate-400 hover:text-white transition-colors">
+      <span class="material-symbols-outlined" style="font-size:24px;width:24px;height:24px;">notifications</span>
+      <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0f172a]"></span>
+    </button>
+  </header>
+
+  <!-- Content -->
+  <div class="px-10 py-8 space-y-6 pb-24 max-w-4xl">
+
+    <!-- Profile Section -->
+    <div class="glass-card rounded-2xl p-8">
+      <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">person</span>
+        Profile Information
+      </h3>
+      <div class="flex items-start gap-8 mb-6">
+        <!-- Avatar -->
+        <div class="flex flex-col items-center gap-3">
+          <div class="relative">
+            <img id="avatarPreview" src="assets/avatar.png" alt="Profile"
+              onerror="this.src='https://ui-avatars.com/api/?name=Devanshu+Goyal&background=6366f1&color=fff&size=80'"
+              class="w-20 h-20 rounded-full object-cover border-2 border-indigo-500/30">
+            <label class="absolute bottom-0 right-0 w-7 h-7 bg-indigo-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-indigo-400 transition-colors">
+              <span class="material-symbols-outlined text-white" style="font-size:14px;width:14px;height:14px;">edit</span>
+              <input type="file" accept="image/*" class="hidden" onchange="changeAvatar(this)"/>
+            </label>
+          </div>
+          <p class="text-xs text-slate-400">Click to change</p>
+        </div>
+        <!-- Fields -->
+        <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Full Name</label>
+            <input id="settingName" type="text" value="Devanshu Goyal"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Email</label>
+            <input id="settingEmail" type="email" value="devanshu@example.com"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Phone</label>
+            <input id="settingPhone" type="tel" placeholder="+91 98765 43210"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Currency</label>
+            <select id="settingCurrency" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm">
+              <option value="INR">🇮🇳 Indian Rupee (₹)</option>
+              <option value="USD">🇺🇸 US Dollar ($)</option>
+              <option value="EUR">🇪🇺 Euro (€)</option>
+              <option value="GBP">🇬🇧 British Pound (£)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button onclick="saveProfile()" class="bg-[#6366f1] hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all">
+        Save Profile
+      </button>
+    </div>
+
+    <!-- Security Section -->
+    <div class="glass-card rounded-2xl p-8">
+      <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">lock</span>
+        Security
+      </h3>
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Current Password</label>
+            <input type="password" placeholder="••••••••"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">New Password</label>
+            <input id="newPass" type="password" placeholder="••••••••"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Confirm Password</label>
+            <input id="confirmPass" type="password" placeholder="••••••••"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+          </div>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl border border-slate-700/30">
+          <div>
+            <p class="text-sm font-semibold text-white">Two-Factor Authentication</p>
+            <p class="text-xs text-slate-400">Add extra security to your account</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input id="toggle2FA" type="checkbox" class="sr-only peer"/>
+            <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366f1]"></div>
+          </label>
+        </div>
+        <button onclick="changePassword()" class="bg-[#6366f1] hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all">
+          Update Password
+        </button>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="glass-card rounded-2xl p-8">
+      <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">notifications</span>
+        Notifications
+      </h3>
+      <div class="space-y-4">
+        <div id="notifToggles" class="space-y-3"></div>
+        <button onclick="saveNotifications()" class="bg-[#6366f1] hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all">
+          Save Notifications
+        </button>
+      </div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="glass-card rounded-2xl p-8">
+      <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">palette</span>
+        Appearance
+      </h3>
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Theme</label>
+          <div class="flex gap-3">
+            <button onclick="setTheme('dark')" id="themeDark" class="flex-1 py-3 rounded-xl border-2 border-indigo-500 bg-slate-900 text-white text-sm font-semibold flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">dark_mode</span> Dark
+            </button>
+            <button onclick="setTheme('light')" id="themeLight" class="flex-1 py-3 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 text-sm font-semibold flex items-center justify-center gap-2 hover:border-slate-500 transition-all">
+              <span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">light_mode</span> Light
+            </button>
+            <button onclick="setTheme('system')" id="themeSystem" class="flex-1 py-3 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 text-sm font-semibold flex items-center justify-center gap-2 hover:border-slate-500 transition-all">
+              <span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">computer</span> System
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Language</label>
+          <select id="settingLang" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm">
+            <option value="en">🇬🇧 English</option>
+            <option value="hi">🇮🇳 Hindi</option>
+            <option value="gu">🇮🇳 Gujarati</option>
+            <option value="mr">🇮🇳 Marathi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Management -->
+    <div class="glass-card rounded-2xl p-8">
+      <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">storage</span>
+        Data Management
+      </h3>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl border border-slate-700/30">
+          <div>
+            <p class="text-sm font-semibold text-white">Export All Data</p>
+            <p class="text-xs text-slate-400">Download all your transactions as JSON</p>
+          </div>
+          <button onclick="exportData()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">download</span>
+            Export
+          </button>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl border border-slate-700/30">
+          <div>
+            <p class="text-sm font-semibold text-white">Import Data</p>
+            <p class="text-xs text-slate-400">Import transactions from JSON file</p>
+          </div>
+          <label class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">upload</span>
+            Import
+            <input type="file" accept=".json" class="hidden" onchange="importData(this)"/>
+          </label>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-red-500/5 rounded-xl border border-red-500/20">
+          <div>
+            <p class="text-sm font-semibold text-red-400">Clear All Data</p>
+            <p class="text-xs text-slate-400">Permanently delete all transactions and settings</p>
+          </div>
+          <button onclick="clearData()" class="px-4 py-2 bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white rounded-lg text-sm font-semibold transition-all border border-red-500/30">
+            Clear Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="glass-card rounded-2xl p-8">
+      <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">info</span>
+        About SmartSpend AI
+      </h3>
+      <div class="space-y-2 text-sm text-slate-400">
+        <div class="flex justify-between"><span>Version</span><span class="text-white font-semibold">1.0.0</span></div>
+        <div class="flex justify-between"><span>Plan</span><span class="text-indigo-400 font-semibold">✨ Pro Plan</span></div>
+        <div class="flex justify-between"><span>Made with</span><span class="text-white">❤️ in India</span></div>
+        <div class="flex justify-between"><span>Powered by</span><span class="text-white">Gemini AI</span></div>
+      </div>
+      <div class="flex gap-3 mt-4">
+        <a href="#" class="text-xs text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
+        <span class="text-slate-600">·</span>
+        <a href="#" class="text-xs text-slate-400 hover:text-white transition-colors">Terms of Service</a>
+        <span class="text-slate-600">·</span>
+        <a href="#" class="text-xs text-slate-400 hover:text-white transition-colors">Contact Support</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ============================================================
+// SmartSpend AI — Settings Logic
+// ============================================================
+
+const NOTIF_OPTIONS = [
+  { id:'notif_80', label:'Alert at 80% budget usage', default:true },
+  { id:'notif_100', label:'Alert at 100% (overspend)', default:true },
+  { id:'notif_weekly', label:'Weekly spending summary', default:false },
+  { id:'notif_ai', label:'AI recommendations', default:true },
+  { id:'notif_goal', label:'Goal milestone alerts', default:true },
+  { id:'notif_txn', label:'New transaction added', default:false },
+];
+
+function loadSettings() {
+  return JSON.parse(localStorage.getItem('smartspend_settings') || '{}');
+}
+function saveSettings(data) {
+  localStorage.setItem('smartspend_settings', JSON.stringify({...loadSettings(), ...data}));
+}
+
+// ---- Load saved settings ----
+function init() {
+  const s = loadSettings();
+  if (s.name)  { document.getElementById('settingName').value = s.name; document.getElementById('sidebarName').textContent = s.name; }
+  if (s.email) { document.getElementById('settingEmail').value = s.email; document.getElementById('sidebarEmail').textContent = s.email; }
+  if (s.phone) document.getElementById('settingPhone').value = s.phone;
+  if (s.currency) document.getElementById('settingCurrency').value = s.currency;
+  if (s.lang) document.getElementById('settingLang').value = s.lang;
+
+  // Notification toggles
+  const notifContainer = document.getElementById('notifToggles');
+  notifContainer.innerHTML = NOTIF_OPTIONS.map(n => {
+    const checked = s[n.id] !== undefined ? s[n.id] : n.default;
+    return `
+    <div class="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl border border-slate-700/30">
+      <span class="text-sm text-white">${n.label}</span>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input id="${n.id}" type="checkbox" class="sr-only peer" ${checked?'checked':''} onchange="autoSaveNotif()"/>
+        <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366f1]"></div>
+      </label>
+    </div>`;
+  }).join('');
+}
+
+// ---- Profile ----
+function saveProfile() {
+  const name     = document.getElementById('settingName').value.trim();
+  const email    = document.getElementById('settingEmail').value.trim();
+  const phone    = document.getElementById('settingPhone').value.trim();
+  const currency = document.getElementById('settingCurrency').value;
+  const lang     = document.getElementById('settingLang').value;
+
+  if (!name)  { showToast('Name cannot be empty!', 'error'); return; }
+  if (!email) { showToast('Email cannot be empty!', 'error'); return; }
+
+  saveSettings({ name, email, phone, currency, lang });
+
+  // Update sidebar
+  document.getElementById('sidebarName').textContent  = name;
+  document.getElementById('sidebarEmail').textContent = email;
+
+  showToast('Profile saved!', 'success');
+}
+
+// ---- Avatar ----
+function changeAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const src = e.target.result;
+    document.getElementById('avatarPreview').src = src;
+    document.getElementById('sidebarAvatar').src = src;
+    saveSettings({ avatar: src });
+    showToast('Profile photo updated!', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Load saved avatar
+const savedAvatar = loadSettings().avatar;
+if (savedAvatar) {
+  document.getElementById('avatarPreview').src = savedAvatar;
+  document.getElementById('sidebarAvatar').src = savedAvatar;
+}
+
+// ---- Password ----
+function changePassword() {
+  const np = document.getElementById('newPass').value;
+  const cp = document.getElementById('confirmPass').value;
+  if (!np) { showToast('Enter a new password!', 'error'); return; }
+  if (np !== cp) { showToast('Passwords do not match!', 'error'); return; }
+  if (np.length < 6) { showToast('Password must be at least 6 characters!', 'error'); return; }
+  showToast('Password updated successfully!', 'success');
+  document.getElementById('newPass').value = '';
+  document.getElementById('confirmPass').value = '';
+}
+
+// ---- Notifications ----
+function saveNotifications() {
+  const data = {};
+  NOTIF_OPTIONS.forEach(n => { data[n.id] = document.getElementById(n.id).checked; });
+  saveSettings(data);
+  showToast('Notification settings saved!', 'success');
+}
+function autoSaveNotif() {
+  const data = {};
+  NOTIF_OPTIONS.forEach(n => { data[n.id] = document.getElementById(n.id)?.checked; });
+  saveSettings(data);
+}
+
+// ---- Theme ----
+function setTheme(theme) {
+  ['dark','light','system'].forEach(t => {
+    const btn = document.getElementById('theme'+t.charAt(0).toUpperCase()+t.slice(1));
+    if (t === theme) {
+      btn.className = btn.className.replace('border-slate-700 bg-slate-800 text-slate-400','border-indigo-500 bg-slate-900 text-white');
+    } else {
+      btn.className = btn.className.replace('border-indigo-500 bg-slate-900 text-white','border-slate-700 bg-slate-800 text-slate-400');
+    }
+  });
+  saveSettings({ theme });
+  showToast(`${theme.charAt(0).toUpperCase()+theme.slice(1)} theme selected!`, 'success');
+}
+
+// ---- Data ----
+function exportData() {
+  const data = {
+    transactions: JSON.parse(localStorage.getItem('smartspend_transactions')||'[]'),
+    budgets:      JSON.parse(localStorage.getItem('smartspend_budgets')||'{}'),
+    goals:        JSON.parse(localStorage.getItem('smartspend_goals')||'[]'),
+    settings:     loadSettings(),
+    exported_at:  new Date().toISOString(),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `SmartSpend_Backup_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Data exported successfully!', 'success');
+}
+
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.transactions) localStorage.setItem('smartspend_transactions', JSON.stringify(data.transactions));
+      if (data.budgets)      localStorage.setItem('smartspend_budgets', JSON.stringify(data.budgets));
+      if (data.goals)        localStorage.setItem('smartspend_goals', JSON.stringify(data.goals));
+      if (data.settings)     localStorage.setItem('smartspend_settings', JSON.stringify(data.settings));
+      showToast(`Imported ${data.transactions?.length||0} transactions!`, 'success');
+      setTimeout(()=>init(), 500);
+    } catch {
+      showToast('Invalid file format!', 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function clearData() {
+  if (!confirm('⚠️ This will permanently delete ALL your transactions, budgets, goals and settings. Are you sure?')) return;
+  if (!confirm('Last warning! This cannot be undone. Continue?')) return;
+  ['smartspend_transactions','smartspend_budgets','smartspend_goals','smartspend_settings','smartspend_alerts'].forEach(k => localStorage.removeItem(k));
+  showToast('All data cleared!', 'error');
+  setTimeout(()=>location.href='dashboard.html', 1500);
+}
+
+// ---- Toast ----
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = type==='success'?'check_circle':'error';
+  toast.style.backgroundColor = type==='success'?'#22c55e':'#ef4444';
+  toast.classList.remove('hidden');
+  toast.classList.add('flex','toast-show');
+  setTimeout(()=>{ toast.classList.add('hidden'); toast.classList.remove('flex','toast-show'); },2500);
+}
+
+init();
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

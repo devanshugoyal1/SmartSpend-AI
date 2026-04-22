@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Budget Manager | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{ colors:{
+      "primary":"#6366f1","surface":"#0f172a","surface-container":"#1e293b",
+      "outline-variant":"#334155","on-surface":"#f1f5f9","on-surface-variant":"#94a3b8",
+      "tertiary":"#10b981","error":"#ef4444"
+    }, fontFamily:{"headline":["Manrope"],"body":["Inter"]},
+    borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"} } }
+  }
+</script>
+<style>
+  .glass-card { background: #1e293b; border: 1px solid #334155; }
+  .mono-currency { font-family: ui-monospace, monospace; }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 20px !important; line-height: 1 !important;
+    display: inline-flex !important; align-items: center;
+    width: 20px !important; height: 20px !important;
+    overflow: hidden !important; flex-shrink: 0;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  @keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+  @keyframes slideOut { from{transform:translateX(0);opacity:1} to{transform:translateX(100px);opacity:0} }
+  .toast-show { animation: slideIn 0.3s ease forwards; }
+  .toast-hide { animation: slideOut 0.3s ease forwards; }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="bg-[#0f172a] text-on-surface font-body min-h-screen flex">
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-6 right-6 z-[200] px-5 py-3 rounded-xl text-white font-semibold text-sm flex items-center gap-3 shadow-2xl">
+  <span class="material-symbols-outlined" id="toastIcon">check_circle</span>
+  <span id="toastMsg">Saved!</span>
+</div>
+
+<!-- Sidebar -->
+<aside class="w-64 h-screen sticky left-0 top-0 bg-[#0f172a] border-r border-slate-700/50 flex flex-col z-50">
+  <div class="px-6 py-5 border-b border-slate-700/50">
+    <a href="index.html" class="flex items-center gap-2 mb-2" style="text-decoration:none;">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:28px;width:28px;object-fit:contain;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'">
+      <span style="font-size:16px;font-weight:700;color:#f8fafc;font-family:'Manrope',sans-serif;white-space:nowrap;">SmartSpend AI</span>
+    </a>
+    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#6366f1] text-white">✨ Pro Plan</span>
+  </div>
+  <nav class="flex-1 px-3 py-3 space-y-1 overflow-y-auto no-scrollbar">
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="transactions.html">
+      <span class="material-symbols-outlined">credit_card</span><span class="text-sm font-medium">Transactions</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="analytics.html">
+      <span class="material-symbols-outlined">monitoring</span><span class="text-sm font-medium">Analytics</span>
+    </a>
+    <a class="flex items-center gap-3 bg-[#6366f1] text-white font-semibold border-l-[3px] border-white px-4 py-2.5 rounded-lg" href="budget-manager.html">
+      <span class="material-symbols-outlined">account_balance_wallet</span><span class="text-sm font-semibold">Budgets</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="savings-goals.html">
+      <span class="material-symbols-outlined">emoji_events</span><span class="text-sm font-medium">Goals</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="ai-insights.html">
+      <span class="material-symbols-outlined">auto_awesome</span><span class="text-sm font-medium">AI Insights</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="reports.html">
+      <span class="material-symbols-outlined">description</span><span class="text-sm font-medium">Reports</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="settings.html">
+      <span class="material-symbols-outlined">settings</span><span class="text-sm font-medium">Settings</span>
+    </a>
+  </nav>
+  <div class="px-4 py-4 space-y-4">
+    <div class="p-4 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#4f46e5] shadow-lg">
+      <p class="text-sm font-bold text-white mb-1">Unlock advanced AI</p>
+      <p class="text-xs text-white/80 mb-3">Get unlimited reports & insights</p>
+      <button class="w-full bg-white text-[#6366f1] py-1.5 rounded-lg text-xs font-bold">Upgrade →</button>
+    </div>
+    <div class="flex items-center gap-3 px-2 pt-3 border-t border-slate-700/50">
+      <img src="assets/avatar.png" alt="Devanshu Goyal"
+        onerror="this.src='https://ui-avatars.com/api/?name=Devanshu+Goyal&background=6366f1&color=fff&size=40'"
+        class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+      <div class="overflow-hidden">
+        <p class="text-sm font-bold text-white truncate" data-user-name>Devanshu Goyal</p>
+        <p class="text-xs text-slate-400 truncate" data-user-email>devanshu@example.com</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="flex-1 min-w-0 flex flex-col bg-[#0f172a]">
+
+  <!-- Header -->
+  <header class="w-full h-20 sticky top-0 z-40 bg-[#0f172a]/80 backdrop-blur-md flex items-center justify-between px-10 border-b border-slate-700/50">
+    <div>
+      <h2 class="text-xl font-bold text-white tracking-tight">Budget Manager</h2>
+      <p id="headerMonth" class="text-xs text-slate-400"></p>
+    </div>
+    <div class="flex-1 flex justify-center px-10">
+      <div class="relative w-full max-w-md">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">search</span>
+        <input class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 outline-none focus:ring-1 focus:ring-indigo-500" placeholder="Search budgets..." type="text"/>
+      </div>
+    </div>
+    <button class="relative p-2 text-slate-400 hover:text-white transition-colors">
+      <span class="material-symbols-outlined" style="font-size:24px;width:24px;height:24px;">notifications</span>
+      <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0f172a]"></span>
+    </button>
+  </header>
+
+  <!-- Content -->
+  <div class="flex-1 px-10 py-8 space-y-8">
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-3 gap-4">
+      <div class="glass-card rounded-xl p-5">
+        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Total Budget Set</p>
+        <p id="summaryTotal" class="text-2xl font-bold text-indigo-400 mono-currency">₹0</p>
+      </div>
+      <div class="glass-card rounded-xl p-5">
+        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Total Spent</p>
+        <p id="summarySpent" class="text-2xl font-bold text-red-400 mono-currency">₹0</p>
+      </div>
+      <div class="glass-card rounded-xl p-5">
+        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Remaining</p>
+        <p id="summaryRemaining" class="text-2xl font-bold text-green-400 mono-currency">₹0</p>
+      </div>
+    </div>
+
+    <!-- Budget Cards Grid -->
+    <div id="budgetGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+
+    <!-- Alert Settings -->
+    <section class="glass-card p-8 rounded-xl">
+      <h3 class="text-xl font-bold text-white flex items-center gap-2 mb-6">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">notifications_active</span>
+        Budget Alert Settings
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+        <label class="flex items-center justify-between cursor-pointer">
+          <span class="text-sm text-white">Alert at 80% usage</span>
+          <div class="relative">
+            <input id="alert80" type="checkbox" class="sr-only peer" checked onchange="saveAlerts()"/>
+            <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366f1]"></div>
+          </div>
+        </label>
+        <label class="flex items-center justify-between cursor-pointer">
+          <span class="text-sm text-white">Alert at 100% (overspend)</span>
+          <div class="relative">
+            <input id="alert100" type="checkbox" class="sr-only peer" checked onchange="saveAlerts()"/>
+            <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366f1]"></div>
+          </div>
+        </label>
+        <label class="flex items-center justify-between cursor-pointer">
+          <span class="text-sm text-white">Weekly budget summary</span>
+          <div class="relative">
+            <input id="alertWeekly" type="checkbox" class="sr-only peer" onchange="saveAlerts()"/>
+            <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366f1]"></div>
+          </div>
+        </label>
+        <label class="flex items-center justify-between cursor-pointer">
+          <span class="text-sm text-white">AI budget recommendations</span>
+          <div class="relative">
+            <input id="alertAI" type="checkbox" class="sr-only peer" checked onchange="saveAlerts()"/>
+            <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366f1]"></div>
+          </div>
+        </label>
+      </div>
+      <div class="flex gap-4 items-end">
+        <div class="flex-1">
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Notification Email</label>
+          <input id="alertEmail" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm" type="email" value="devanshu@example.com"/>
+        </div>
+        <button onclick="saveAlerts()" class="bg-[#6366f1] text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-500 transition-all text-sm">
+          Save Settings
+        </button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Edit Budget Modal -->
+<div id="editModal" class="hidden fixed inset-0 z-[100] bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center p-6">
+  <div class="glass-card w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl">
+    <div class="px-8 py-6 border-b border-slate-700 flex justify-between items-center">
+      <h3 id="modalTitle" class="text-xl font-extrabold text-white">Edit Budget</h3>
+      <button onclick="closeModal()" class="text-slate-500 hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-8 space-y-6">
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <label class="text-sm font-bold text-slate-400 uppercase tracking-wider">Monthly Limit</label>
+          <span id="modalLimitDisplay" class="text-2xl font-bold text-indigo-400 mono-currency">₹10,000</span>
+        </div>
+        <input id="modalSlider" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+          type="range" min="0" max="50000" step="500" value="10000"
+          oninput="syncSlider(this.value)"/>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-mono">₹</span>
+          <input id="modalInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-4 py-4 text-xl font-bold text-white mono-currency outline-none focus:ring-1 focus:ring-indigo-500"
+            type="number" value="10000" oninput="syncInput(this.value)"/>
+        </div>
+      </div>
+
+      <!-- AI Suggestion -->
+      <div class="bg-indigo-500/10 rounded-xl p-5 border border-indigo-500/20">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2 text-indigo-200">
+            <span class="material-symbols-outlined" style="font-size:16px;width:16px;height:16px;">auto_awesome</span>
+            <span class="text-sm font-bold">AI Recommendation</span>
+          </div>
+          <button onclick="applyAISuggestion()" class="text-xs font-bold bg-indigo-500 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-400 transition-colors">
+            Apply Suggestion
+          </button>
+        </div>
+        <p id="aiSuggestionText" class="text-indigo-100/80 text-sm leading-relaxed">
+          Calculating suggestion based on your spending history...
+        </p>
+      </div>
+    </div>
+    <div class="flex gap-4 px-8 pb-8">
+      <button onclick="closeModal()" class="flex-1 px-6 py-3 rounded-xl border border-slate-700 font-bold text-slate-400 hover:bg-white/5 transition-colors">
+        Cancel
+      </button>
+      <button onclick="saveBudget()" class="flex-1 px-6 py-3 rounded-xl bg-[#6366f1] font-bold text-white hover:bg-indigo-500 transition-colors">
+        Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Category Modal -->
+<div id="addModal" class="hidden fixed inset-0 z-[100] bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center p-6">
+  <div class="glass-card w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
+    <div class="px-8 py-6 border-b border-slate-700 flex justify-between items-center">
+      <h3 class="text-xl font-extrabold text-white">Add Budget Category</h3>
+      <button onclick="closeAddModal()" class="text-slate-500 hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-8 space-y-4">
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Category</label>
+        <select id="newCatSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm">
+          <option value="🍕 Food">🍕 Food</option>
+          <option value="🛒 Shopping">🛒 Shopping</option>
+          <option value="🚗 Transport">🚗 Transport</option>
+          <option value="⚡ Utilities">⚡ Utilities</option>
+          <option value="🎬 Entertainment">🎬 Entertainment</option>
+          <option value="💊 Health">💊 Health</option>
+          <option value="🎓 Education">🎓 Education</option>
+          <option value="🏠 Rent">🏠 Rent</option>
+          <option value="✈️ Travel">✈️ Travel</option>
+          <option value="💡 Other">💡 Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Monthly Limit (₹)</label>
+        <input id="newCatLimit" type="number" placeholder="5000" min="0"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm mono-currency"/>
+      </div>
+    </div>
+    <div class="flex gap-4 px-8 pb-8">
+      <button onclick="closeAddModal()" class="flex-1 py-3 rounded-xl border border-slate-700 font-bold text-slate-400 hover:bg-white/5 transition-colors">Cancel</button>
+      <button onclick="addCategory()" class="flex-1 py-3 rounded-xl bg-[#6366f1] font-bold text-white hover:bg-indigo-500 transition-colors">Add Category</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// SmartSpend AI — Budget Manager Logic
+// localStorage keys:
+//   smartspend_transactions  — transaction data
+//   smartspend_budgets       — budget limits per category
+//   smartspend_alerts        — alert settings
+// ============================================================
+
+const DEFAULT_BUDGETS = {
+  '🍕 Food': 10000,
+  '🛒 Shopping': 8000,
+  '🚗 Transport': 5000,
+  '⚡ Utilities': 4500,
+  '🎬 Entertainment': 3000,
+  '💊 Health': 4000,
+  '🎓 Education': 2000,
+};
+
+const CAT_EMOJIS = {
+  '🍕 Food':'🍕','🛒 Shopping':'🛒','🚗 Transport':'🚗','⚡ Utilities':'⚡',
+  '🎬 Entertainment':'🎬','💊 Health':'💊','🎓 Education':'🎓',
+  '🏠 Rent':'🏠','✈️ Travel':'✈️','💡 Other':'💡',
+};
+
+let editingCat = null;
+let aiSuggested = 0;
+
+// ---- Load / Save ----
+function loadBudgets() {
+  const saved = localStorage.getItem('smartspend_budgets');
+  return saved ? JSON.parse(saved) : { ...DEFAULT_BUDGETS };
+}
+function saveBudgetData(data) {
+  localStorage.setItem('smartspend_budgets', JSON.stringify(data));
+}
+function loadTxns() {
+  return JSON.parse(localStorage.getItem('smartspend_transactions') || '[]');
+}
+function loadAlerts() {
+  const saved = localStorage.getItem('smartspend_alerts');
+  return saved ? JSON.parse(saved) : { a80: true, a100: true, weekly: false, ai: true, email: 'devanshu@example.com' };
+}
+
+// ---- Spending for current month ----
+function getMonthlySpending() {
+  const now = new Date();
+  const txns = loadTxns().filter(t => {
+    const d = new Date(t.date);
+    return t.type === 'expense' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+  const map = {};
+  txns.forEach(t => map[t.category] = (map[t.category] || 0) + t.amount);
+  return map;
+}
+
+// ---- Render Budget Cards ----
+function renderBudgets() {
+  const budgets = loadBudgets();
+  const spending = getMonthlySpending();
+  const grid = document.getElementById('budgetGrid');
+
+  let totalBudget = 0, totalSpent = 0;
+  Object.values(budgets).forEach(v => totalBudget += v);
+  Object.values(spending).forEach(v => totalSpent += v);
+
+  // Summary cards
+  const fmt = n => '₹' + Math.abs(n).toLocaleString('en-IN');
+  document.getElementById('summaryTotal').textContent     = fmt(totalBudget);
+  document.getElementById('summarySpent').textContent     = fmt(totalSpent);
+  document.getElementById('summaryRemaining').textContent = fmt(Math.max(0, totalBudget - totalSpent));
+
+  // Budget cards
+  let html = '';
+  Object.entries(budgets).forEach(([cat, limit]) => {
+    const spent = spending[cat] || 0;
+    const pct   = Math.min((spent / limit) * 100, 100).toFixed(0);
+    const emoji = cat.split(' ')[0];
+    const remaining = limit - spent;
+
+    let barColor, statusText, statusColor, borderColor;
+    if (pct >= 100) {
+      barColor='#ef4444'; statusText='🔴 Budget exceeded!'; statusColor='text-red-400'; borderColor='border-red-500/30';
+    } else if (pct >= 80) {
+      barColor='#f59e0b'; statusText=`⚠️ ${100-pct}% remaining — slow down`; statusColor='text-amber-400'; borderColor='border-amber-500/20';
+    } else if (pct >= 50) {
+      barColor='#6366f1'; statusText=`✅ On track — ${fmt(remaining)} left`; statusColor='text-indigo-400'; borderColor='border-slate-700/30';
+    } else {
+      barColor='#22c55e'; statusText=`✅ On track — ${fmt(remaining)} left`; statusColor='text-green-400'; borderColor='border-slate-700/30';
+    }
+
+    html += `
+    <div class="glass-card ${borderColor} p-6 rounded-xl hover:bg-slate-800/60 transition-colors">
+      <div class="flex justify-between items-start mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-slate-700/50 flex items-center justify-center text-2xl">${emoji}</div>
+          <div>
+            <h3 class="text-base font-bold text-white">${cat}</h3>
+            <p class="text-xs text-slate-400 mono-currency">${fmt(spent)} / ${fmt(limit)}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-bold px-2 py-1 rounded" style="color:${barColor};background:${barColor}18">${pct}%</span>
+          <button onclick="openEditModal('${cat}')" class="p-1.5 hover:bg-slate-700 rounded-lg transition-colors text-slate-400 hover:text-white">
+            <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">edit</span>
+          </button>
+        </div>
+      </div>
+      <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden mb-3">
+        <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:${barColor}"></div>
+      </div>
+      <p class="text-xs font-medium ${statusColor}">${statusText}</p>
+    </div>`;
+  });
+
+  // Add Category card
+  html += `
+  <div onclick="openAddModal()" class="border-2 border-dashed border-slate-700 p-6 rounded-xl flex flex-col items-center justify-center gap-4 hover:border-indigo-500 hover:bg-indigo-500/5 transition-all cursor-pointer group">
+    <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
+      <span class="material-symbols-outlined text-slate-400 group-hover:text-indigo-400">add</span>
+    </div>
+    <span class="font-bold text-slate-400 group-hover:text-indigo-400 transition-colors">Add Category</span>
+  </div>`;
+
+  grid.innerHTML = html;
+}
+
+// ---- Edit Modal ----
+function openEditModal(cat) {
+  editingCat = cat;
+  const budgets = loadBudgets();
+  const spending = getMonthlySpending();
+  const limit = budgets[cat] || 5000;
+  const spent = spending[cat] || 0;
+
+  document.getElementById('modalTitle').textContent = `Edit ${cat} Budget`;
+  document.getElementById('modalSlider').value = limit;
+  document.getElementById('modalInput').value = limit;
+  document.getElementById('modalLimitDisplay').textContent = '₹' + limit.toLocaleString('en-IN');
+
+  // AI Suggestion: 3-month average * 1.1 or spent * 1.2
+  const txns = loadTxns();
+  const threeMonthSpend = [0,1,2].map(i => {
+    const d = new Date(); d.setMonth(d.getMonth() - i);
+    return txns.filter(t => {
+      const td = new Date(t.date);
+      return t.type==='expense' && t.category===cat && td.getMonth()===d.getMonth() && td.getFullYear()===d.getFullYear();
+    }).reduce((s,t)=>s+t.amount,0);
+  });
+  const avg = Math.round(threeMonthSpend.reduce((s,v)=>s+v,0) / 3);
+  aiSuggested = avg > 0 ? Math.round(avg * 1.1 / 500) * 500 : limit;
+
+  document.getElementById('aiSuggestionText').innerHTML =
+    avg > 0
+      ? `Suggested: <span class="font-bold text-white">₹${aiSuggested.toLocaleString('en-IN')}</span> based on your 3-month average of ₹${avg.toLocaleString('en-IN')}. ${aiSuggested < limit ? 'This will help you save more.' : 'This matches your spending habits.'}`
+      : `No spending history found for ${cat}. Current limit: ₹${limit.toLocaleString('en-IN')}.`;
+
+  document.getElementById('editModal').classList.remove('hidden');
+  document.getElementById('editModal').classList.add('flex');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.add('hidden');
+  document.getElementById('editModal').classList.remove('flex');
+  editingCat = null;
+}
+
+function syncSlider(val) {
+  document.getElementById('modalInput').value = val;
+  document.getElementById('modalLimitDisplay').textContent = '₹' + parseInt(val).toLocaleString('en-IN');
+}
+function syncInput(val) {
+  document.getElementById('modalSlider').value = val;
+  document.getElementById('modalLimitDisplay').textContent = '₹' + parseInt(val || 0).toLocaleString('en-IN');
+}
+
+function applyAISuggestion() {
+  document.getElementById('modalInput').value = aiSuggested;
+  document.getElementById('modalSlider').value = aiSuggested;
+  document.getElementById('modalLimitDisplay').textContent = '₹' + aiSuggested.toLocaleString('en-IN');
+}
+
+function saveBudget() {
+  const val = parseInt(document.getElementById('modalInput').value);
+  if (!val || val <= 0) { showToast('Enter a valid limit!', 'error'); return; }
+  const budgets = loadBudgets();
+  budgets[editingCat] = val;
+  saveBudgetData(budgets);
+  closeModal();
+  renderBudgets();
+  showToast(`${editingCat} budget updated to ₹${val.toLocaleString('en-IN')}!`, 'success');
+}
+
+// ---- Add Category Modal ----
+function openAddModal() {
+  document.getElementById('addModal').classList.remove('hidden');
+  document.getElementById('addModal').classList.add('flex');
+}
+function closeAddModal() {
+  document.getElementById('addModal').classList.add('hidden');
+  document.getElementById('addModal').classList.remove('flex');
+}
+
+function addCategory() {
+  const cat   = document.getElementById('newCatSelect').value;
+  const limit = parseInt(document.getElementById('newCatLimit').value);
+  if (!limit || limit <= 0) { showToast('Enter a valid limit!', 'error'); return; }
+
+  const budgets = loadBudgets();
+  if (budgets[cat]) { showToast(`${cat} already exists! Edit it instead.`, 'error'); return; }
+  budgets[cat] = limit;
+  saveBudgetData(budgets);
+  closeAddModal();
+  renderBudgets();
+  showToast(`${cat} budget added!`, 'success');
+}
+
+// ---- Alerts ----
+function saveAlerts() {
+  const alerts = {
+    a80:    document.getElementById('alert80').checked,
+    a100:   document.getElementById('alert100').checked,
+    weekly: document.getElementById('alertWeekly').checked,
+    ai:     document.getElementById('alertAI').checked,
+    email:  document.getElementById('alertEmail').value,
+  };
+  localStorage.setItem('smartspend_alerts', JSON.stringify(alerts));
+  showToast('Alert settings saved!', 'success');
+}
+
+function loadAlertSettings() {
+  const alerts = loadAlerts();
+  document.getElementById('alert80').checked    = alerts.a80;
+  document.getElementById('alert100').checked   = alerts.a100;
+  document.getElementById('alertWeekly').checked = alerts.weekly;
+  document.getElementById('alertAI').checked    = alerts.ai;
+  document.getElementById('alertEmail').value   = alerts.email;
+}
+
+// ---- Toast ----
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = type==='success' ? 'check_circle' : 'error';
+  toast.style.backgroundColor = type==='success' ? '#22c55e' : '#ef4444';
+  toast.classList.remove('hidden');
+  toast.classList.add('flex','toast-show');
+  setTimeout(()=>{
+    toast.classList.add('toast-hide');
+    setTimeout(()=>{ toast.classList.add('hidden'); toast.classList.remove('flex','toast-show','toast-hide'); },300);
+  },2500);
+}
+
+// Close modals on backdrop click
+document.getElementById('editModal').addEventListener('click',e=>{ if(e.target===document.getElementById('editModal')) closeModal(); });
+document.getElementById('addModal').addEventListener('click',e=>{ if(e.target===document.getElementById('addModal')) closeAddModal(); });
+
+// ---- Init ----
+const now = new Date();
+document.getElementById('headerMonth').textContent =
+  now.toLocaleDateString('en-IN',{month:'long',year:'numeric'}) + ' · Set your spending limits';
+
+loadAlertSettings();
+renderBudgets();
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

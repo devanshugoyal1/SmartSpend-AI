@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Savings Goals | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{ colors:{
+      "primary":"#6366f1","surface":"#0f172a","surface-container":"#1e293b",
+      "outline-variant":"#334155","on-surface":"#f8fafc","on-surface-variant":"#94a3b8",
+      "tertiary":"#4ae176","error":"#ef4444"
+    }, fontFamily:{"headline":["Manrope"],"body":["Inter"]},
+    borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"} } }
+  }
+</script>
+<style>
+  body { background-color:#0f172a; color:#f8fafc; font-family:'Inter',sans-serif; }
+  .glass-card { background:rgba(30,41,59,0.8); backdrop-filter:blur(16px); border:1px solid rgba(144,143,160,0.15); }
+  .font-manrope { font-family:'Manrope',sans-serif; }
+  .monospace-currency { font-family:'Courier New',Courier,monospace; }
+  .material-symbols-outlined {
+    font-family:'Material Symbols Outlined' !important;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-size:20px !important; line-height:1 !important;
+    display:inline-flex !important; align-items:center;
+    width:20px !important; height:20px !important;
+    overflow:hidden !important; flex-shrink:0;
+  }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  @keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+  @keyframes slideOut { from{transform:translateX(0);opacity:1} to{transform:translateX(100px);opacity:0} }
+  .toast-show { animation:slideIn 0.3s ease forwards; }
+  .toast-hide { animation:slideOut 0.3s ease forwards; }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="flex min-h-screen overflow-x-hidden bg-[#0f172a]">
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed top-6 right-6 z-[200] px-5 py-3 rounded-xl text-white font-semibold text-sm flex items-center gap-3 shadow-2xl">
+  <span class="material-symbols-outlined" id="toastIcon">check_circle</span>
+  <span id="toastMsg">Saved!</span>
+</div>
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r border-slate-700/50 bg-[#0f172a] flex flex-col z-50">
+  <div class="px-6 py-5 border-b border-slate-700/50">
+    <a href="index.html" class="flex items-center gap-2 mb-2" style="text-decoration:none;">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:28px;width:28px;object-fit:contain;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'">
+      <span style="font-size:16px;font-weight:700;color:#f8fafc;font-family:'Manrope',sans-serif;white-space:nowrap;">SmartSpend AI</span>
+    </a>
+    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#6366f1] text-white">✨ Pro Plan</span>
+  </div>
+  <nav class="flex-1 px-3 py-3 space-y-1 overflow-y-auto no-scrollbar">
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="transactions.html">
+      <span class="material-symbols-outlined">credit_card</span><span class="text-sm font-medium">Transactions</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="analytics.html">
+      <span class="material-symbols-outlined">monitoring</span><span class="text-sm font-medium">Analytics</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="budget-manager.html">
+      <span class="material-symbols-outlined">account_balance_wallet</span><span class="text-sm font-medium">Budgets</span>
+    </a>
+    <a class="flex items-center gap-3 bg-[#6366f1] text-white font-semibold border-l-[3px] border-white px-4 py-2.5 rounded-lg" href="savings-goals.html">
+      <span class="material-symbols-outlined">emoji_events</span><span class="text-sm font-semibold">Goals</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="ai-insights.html">
+      <span class="material-symbols-outlined">auto_awesome</span><span class="text-sm font-medium">AI Insights</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="reports.html">
+      <span class="material-symbols-outlined">description</span><span class="text-sm font-medium">Reports</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="settings.html">
+      <span class="material-symbols-outlined">settings</span><span class="text-sm font-medium">Settings</span>
+    </a>
+  </nav>
+  <div class="px-4 py-4 space-y-4">
+    <div class="p-4 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#4f46e5] shadow-lg">
+      <p class="text-sm font-bold text-white mb-1">Unlock advanced AI</p>
+      <p class="text-xs text-white/80 mb-3">Get unlimited reports & insights</p>
+      <button class="w-full bg-white text-[#6366f1] py-1.5 rounded-lg text-xs font-bold">Upgrade →</button>
+    </div>
+    <div class="flex items-center gap-3 px-2 pt-3 border-t border-slate-700/50">
+      <img src="assets/avatar.png" alt="Devanshu Goyal"
+        onerror="this.src='https://ui-avatars.com/api/?name=Devanshu+Goyal&background=6366f1&color=fff&size=40'"
+        class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+      <div class="overflow-hidden">
+        <p class="text-sm font-bold text-white truncate">Devanshu Goyal</p>
+        <p class="text-xs text-slate-400 truncate">devanshu@example.com</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 ml-64 min-h-screen bg-[#0f172a] pb-24">
+
+  <!-- Header -->
+  <header class="flex items-center w-full px-10 py-6 gap-6 border-b border-slate-700/30">
+    <div class="flex-1">
+      <h2 class="text-3xl font-extrabold font-manrope tracking-tight text-white">🏆 Savings Goals</h2>
+      <p class="text-slate-400 text-sm mt-1">Track your financial dreams</p>
+    </div>
+    <div class="relative w-72">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">search</span>
+      <input id="searchGoals" class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-10 pr-4 text-sm text-white py-2.5 outline-none focus:ring-1 focus:ring-indigo-500 placeholder:text-slate-500" placeholder="Search your dreams..." type="text" oninput="renderGoals()"/>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="relative text-slate-400 hover:text-white transition-colors p-2">
+        <span class="material-symbols-outlined" style="font-size:24px;width:24px;height:24px;">notifications</span>
+        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0f172a]"></span>
+      </button>
+      <button onclick="openNewGoalModal()" class="bg-[#6366f1] px-5 py-2.5 rounded-xl text-white text-sm font-bold hover:bg-indigo-500 transition-all">
+        + New Goal
+      </button>
+    </div>
+  </header>
+
+  <!-- Goals Grid -->
+  <div id="goalsGrid" class="px-10 pt-8 grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12"></div>
+
+  <!-- AI Goals Advisor -->
+  <section class="px-10 mb-12">
+    <div class="glass-card rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
+      <div class="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:32px;width:32px;height:32px;font-variation-settings:'FILL' 1;">psychology</span>
+      </div>
+      <div class="flex-1">
+        <h3 class="text-xl font-bold font-manrope mb-2">SmartSpend AI Goals Advisor</h3>
+        <p id="advisorText" class="text-slate-400 text-sm leading-relaxed mb-4">
+          Loading your financial data...
+        </p>
+        <div id="advisorAllocation" class="flex flex-wrap gap-3"></div>
+      </div>
+      <button onclick="applyAllocation()" class="bg-[#6366f1] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-indigo-500 transition-all flex-shrink-0 text-sm">
+        Apply this allocation
+        <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">arrow_forward</span>
+      </button>
+    </div>
+  </section>
+</main>
+
+<!-- New Goal Modal -->
+<div id="newGoalModal" class="hidden fixed inset-0 z-[100] bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center p-6">
+  <div class="glass-card w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
+    <div class="px-8 py-6 border-b border-slate-700 flex justify-between items-center">
+      <h3 class="text-xl font-bold text-white font-manrope">Create New Goal</h3>
+      <button onclick="closeNewGoalModal()" class="text-slate-500 hover:text-white">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-8 space-y-4">
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Goal Name</label>
+        <input id="newGoalName" type="text" placeholder="e.g. iPhone 16 Pro, Vacation, Emergency Fund"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Emoji Icon</label>
+        <div class="flex flex-wrap gap-2" id="emojiPicker">
+          🏆 🛡️ 🏖️ 💻 🏠 ✈️ 💍 🎓 🚗 📱 💰 🎯
+        </div>
+        <input id="newGoalEmoji" type="text" value="🏆" placeholder="Or type emoji"
+          class="mt-2 w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Target Amount (₹)</label>
+          <input id="newGoalTarget" type="number" placeholder="50000" min="100"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm monospace-currency"/>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Deadline</label>
+          <input id="newGoalDeadline" type="month"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm"/>
+        </div>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Initial Savings (₹)</label>
+        <input id="newGoalSaved" type="number" placeholder="0" min="0"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm monospace-currency"/>
+      </div>
+    </div>
+    <div class="flex gap-4 px-8 pb-8">
+      <button onclick="closeNewGoalModal()" class="flex-1 py-3 rounded-xl border border-slate-700 font-bold text-slate-400 hover:bg-white/5">Cancel</button>
+      <button onclick="createGoal()" class="flex-1 py-3 rounded-xl bg-[#6366f1] font-bold text-white hover:bg-indigo-500">Create Goal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Money Modal -->
+<div id="addMoneyModal" class="hidden fixed inset-0 z-[100] bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center p-6">
+  <div class="glass-card w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
+    <div class="px-8 py-6 border-b border-slate-700 flex justify-between items-center">
+      <h3 id="addMoneyTitle" class="text-xl font-bold text-white font-manrope">Add Money</h3>
+      <button onclick="closeAddMoney()" class="text-slate-500 hover:text-white">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-8 space-y-4">
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Amount to Add (₹)</label>
+        <input id="addMoneyAmount" type="number" placeholder="1000" min="1"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-xl font-bold monospace-currency"/>
+      </div>
+      <p id="addMoneyInfo" class="text-xs text-slate-500"></p>
+    </div>
+    <div class="flex gap-4 px-8 pb-8">
+      <button onclick="closeAddMoney()" class="flex-1 py-3 rounded-xl border border-slate-700 font-bold text-slate-400">Cancel</button>
+      <button onclick="confirmAddMoney()" class="flex-1 py-3 rounded-xl bg-[#6366f1] font-bold text-white hover:bg-indigo-500">Add Money</button>
+    </div>
+  </div>
+</div>
+
+<!-- Background blurs -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+  <div class="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px]"></div>
+  <div class="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-green-500/5 rounded-full blur-[100px]"></div>
+</div>
+
+<script>
+// ============================================================
+// SmartSpend AI — Savings Goals Logic
+// localStorage key: 'smartspend_goals'
+// ============================================================
+
+const DEFAULT_GOALS = [
+  { id:1, name:'New iPhone 16 Pro', emoji:'🏆', target:50000, saved:34000, deadline:'2026-06', color:'#6366f1' },
+  { id:2, name:'Emergency Fund',    emoji:'🛡️', target:100000, saved:45000, deadline:'2026-12', color:'#4ae176' },
+  { id:3, name:'Goa Trip',          emoji:'🏖️', target:20000,  saved:4400,  deadline:'2026-05', color:'#f59e0b', behindSchedule:true },
+  { id:4, name:'MacBook Pro',       emoji:'💻', target:150000, saved:0,     deadline:'2027-09', color:'#6366f1' },
+];
+
+let addMoneyGoalId = null;
+
+// ---- Load / Save ----
+function loadGoals() {
+  const s = localStorage.getItem('smartspend_goals');
+  return s ? JSON.parse(s) : DEFAULT_GOALS;
+}
+function saveGoals(goals) {
+  localStorage.setItem('smartspend_goals', JSON.stringify(goals));
+}
+function loadTxns() {
+  return JSON.parse(localStorage.getItem('smartspend_transactions') || '[]');
+}
+
+// ---- Helpers ----
+const fmt = n => '₹' + Math.abs(n).toLocaleString('en-IN');
+
+function daysLeft(deadline) {
+  const now = new Date();
+  const target = new Date(deadline + '-01');
+  target.setMonth(target.getMonth() + 1, 0); // last day of month
+  const diff = Math.ceil((target - now) / (1000*60*60*24));
+  return diff;
+}
+
+function monthsLeft(deadline) {
+  const now = new Date();
+  const [y,m] = deadline.split('-').map(Number);
+  return (y - now.getFullYear()) * 12 + (m - now.getMonth());
+}
+
+function buildRing(pct, color) {
+  const r = 32, circ = 2 * Math.PI * r;
+  const offset = circ - (pct / 100) * circ;
+  return `
+    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 80 80">
+      <circle cx="40" cy="40" fill="transparent" r="${r}" stroke="#1e293b" stroke-width="6"/>
+      <circle cx="40" cy="40" fill="transparent" r="${r}" stroke="${color}"
+        stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"
+        stroke-width="6" stroke-linecap="round"/>
+    </svg>
+    <span class="absolute inset-0 flex items-center justify-center text-sm font-bold" style="color:${color}">${pct}%</span>`;
+}
+
+// ---- Render Goals ----
+function renderGoals() {
+  const goals = loadGoals();
+  const query = (document.getElementById('searchGoals')?.value || '').toLowerCase();
+  const filtered = goals.filter(g => g.name.toLowerCase().includes(query));
+  const grid = document.getElementById('goalsGrid');
+
+  let html = filtered.map(g => {
+    const pct = Math.min(Math.round((g.saved / g.target) * 100), 100);
+    const remaining = g.target - g.saved;
+    const months = Math.max(monthsLeft(g.deadline), 1);
+    const monthly = Math.ceil(remaining / months);
+    const days = daysLeft(g.deadline);
+    const behind = g.behindSchedule || (pct < 50 && days < 90);
+    const color = behind ? '#f59e0b' : pct >= 100 ? '#4ae176' : g.color || '#6366f1';
+
+    let statusEl = '';
+    if (pct >= 100) {
+      statusEl = `<div class="flex items-center gap-2 py-2 px-3 bg-green-500/10 rounded-lg border border-green-500/20">
+        <span class="material-symbols-outlined text-green-400" style="font-size:16px;width:16px;height:16px;">check_circle</span>
+        <p class="text-xs text-green-400 font-medium">🎉 Goal completed! Congratulations!</p></div>`;
+    } else if (behind) {
+      statusEl = `<div class="flex items-center gap-2 py-2 px-3 bg-red-500/10 rounded-lg border border-red-500/20">
+        <span class="material-symbols-outlined text-red-400" style="font-size:16px;width:16px;height:16px;">warning</span>
+        <p class="text-xs text-red-400 font-medium">⚠️ Behind schedule! Need ${fmt(monthly)}/mo to catch up.</p></div>`;
+    } else {
+      statusEl = `<div class="flex items-center gap-2 py-2 px-3 bg-indigo-500/10 rounded-lg border border-indigo-500/10">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:16px;width:16px;height:16px;">lightbulb</span>
+        <p class="text-xs text-indigo-300">💡 Save ${fmt(monthly)}/month to reach goal on time. ${days > 0 ? days + ' days left.' : 'Deadline passed!'}</p></div>`;
+    }
+
+    return `
+    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+      <div class="flex justify-between items-start mb-5">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl" style="background:${color}18">${g.emoji}</div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-xl font-bold font-manrope">${g.name}</h3>
+              ${behind && pct < 100 ? '<span class="px-2 py-0.5 bg-red-900/60 text-red-300 text-[10px] rounded uppercase font-bold">Behind Schedule</span>' : ''}
+              ${pct >= 100 ? '<span class="px-2 py-0.5 bg-green-900/60 text-green-300 text-[10px] rounded uppercase font-bold">✅ Complete</span>' : ''}
+            </div>
+            <p class="text-xs text-slate-400 font-medium">Target: ${new Date(g.deadline+'-01').toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</p>
+          </div>
+        </div>
+        <div class="relative w-20 h-20 flex-shrink-0">
+          ${buildRing(pct, color)}
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex justify-between items-end">
+          <p class="text-sm text-slate-400">Progress</p>
+          <p class="text-lg font-bold monospace-currency">${fmt(g.saved)} <span class="text-sm font-normal opacity-50">/ ${fmt(g.target)}</span></p>
+        </div>
+        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full rounded-full transition-all duration-700" style="width:${pct}%;background:${color}"></div>
+        </div>
+        ${statusEl}
+        <div class="flex items-center justify-between pt-2">
+          <p class="text-xs font-semibold text-slate-400">Monthly needed: <span class="text-white">${fmt(monthly)}</span></p>
+          <div class="flex gap-2">
+            <button onclick="openEditGoal(${g.id})" class="px-3 py-1.5 bg-slate-700 text-white rounded-lg text-xs font-bold hover:bg-slate-600 transition-colors">Edit</button>
+            <button onclick="openAddMoney(${g.id})" class="px-3 py-1.5 bg-[#6366f1] text-white rounded-lg text-xs font-bold hover:bg-indigo-500 transition-colors">Add Money</button>
+            <button onclick="deleteGoal(${g.id})" class="px-2 py-1.5 bg-red-500/10 text-red-400 rounded-lg text-xs hover:bg-red-500/20 transition-colors">
+              <span class="material-symbols-outlined" style="font-size:14px;width:14px;height:14px;">delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Add new goal card
+  html += `
+  <div onclick="openNewGoalModal()" class="border-2 border-dashed border-slate-700/50 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:border-indigo-500/50 transition-colors cursor-pointer group min-h-[200px]">
+    <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4 group-hover:bg-indigo-500/20 transition-colors">
+      <span class="material-symbols-outlined text-slate-400 group-hover:text-indigo-400" style="font-size:28px;width:28px;height:28px;">add_circle</span>
+    </div>
+    <h4 class="text-lg font-bold font-manrope">+ Create New Goal</h4>
+    <p class="text-sm text-slate-500 mt-1 mb-4">What are you dreaming of today?</p>
+    <div class="flex flex-wrap justify-center gap-2">
+      <span class="px-3 py-1 bg-slate-800/50 rounded-full text-[10px] font-semibold text-slate-400 border border-slate-700">💍 Wedding</span>
+      <span class="px-3 py-1 bg-slate-800/50 rounded-full text-[10px] font-semibold text-slate-400 border border-slate-700">🏠 Home</span>
+      <span class="px-3 py-1 bg-slate-800/50 rounded-full text-[10px] font-semibold text-slate-400 border border-slate-700">🎓 Education</span>
+    </div>
+  </div>`;
+
+  grid.innerHTML = html;
+  renderAdvisor();
+}
+
+// ---- AI Advisor ----
+function renderAdvisor() {
+  const txns = loadTxns();
+  const now = new Date();
+  const income = txns.filter(t=>{
+    const d=new Date(t.date);
+    return t.type==='income'&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+  }).reduce((s,t)=>s+t.amount,0);
+  const expense = txns.filter(t=>{
+    const d=new Date(t.date);
+    return t.type==='expense'&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+  }).reduce((s,t)=>s+t.amount,0);
+  const free = Math.max(income - expense, 0);
+
+  document.getElementById('advisorText').innerHTML =
+    income > 0
+      ? `Based on your income of <strong class="text-white">${fmt(income)}</strong> and expenses of <strong class="text-red-400">${fmt(expense)}</strong>, you have <strong class="text-green-400">${fmt(free)}</strong> free this month.`
+      : 'Add income transactions to get personalized allocation advice.';
+
+  const goals = loadGoals().filter(g => g.saved < g.target);
+  if (!free || !goals.length) {
+    document.getElementById('advisorAllocation').innerHTML = '<p class="text-xs text-slate-500">No allocation data available.</p>';
+    return;
+  }
+
+  // Distribute free money proportionally based on urgency
+  const totalNeeded = goals.reduce((s,g) => s + (g.target - g.saved), 0);
+  const colors = ['#4ae176','#6366f1','#f59e0b','#94a3b8','#ec4899'];
+
+  document.getElementById('advisorAllocation').innerHTML = goals.slice(0,4).map((g,i) => {
+    const alloc = Math.round((g.target - g.saved) / totalNeeded * free);
+    return `
+    <div class="px-4 py-2 bg-slate-800 rounded-xl border border-slate-700/50 flex flex-col">
+      <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">${g.emoji} ${g.name.split(' ').slice(0,2).join(' ')}</span>
+      <span class="text-sm font-bold" style="color:${colors[i]}">${fmt(alloc)}</span>
+    </div>`;
+  }).join('');
+}
+
+// ---- New Goal Modal ----
+function openNewGoalModal() {
+  // Set default deadline 6 months from now
+  const d = new Date(); d.setMonth(d.getMonth()+6);
+  document.getElementById('newGoalDeadline').value = d.toISOString().slice(0,7);
+  document.getElementById('newGoalModal').classList.remove('hidden');
+  document.getElementById('newGoalModal').classList.add('flex');
+}
+function closeNewGoalModal() {
+  document.getElementById('newGoalModal').classList.add('hidden');
+  document.getElementById('newGoalModal').classList.remove('flex');
+}
+
+// Emoji picker
+document.addEventListener('DOMContentLoaded', () => {
+  const picker = document.getElementById('emojiPicker');
+  if (picker) {
+    const emojis = picker.textContent.trim().split(' ');
+    picker.innerHTML = emojis.map(e =>
+      `<button type="button" onclick="document.getElementById('newGoalEmoji').value='${e}'" class="text-2xl p-1.5 rounded-lg hover:bg-slate-700 transition-colors">${e}</button>`
+    ).join('');
+  }
+});
+
+function createGoal() {
+  const name     = document.getElementById('newGoalName').value.trim();
+  const emoji    = document.getElementById('newGoalEmoji').value.trim() || '🏆';
+  const target   = parseFloat(document.getElementById('newGoalTarget').value);
+  const deadline = document.getElementById('newGoalDeadline').value;
+  const saved    = parseFloat(document.getElementById('newGoalSaved').value) || 0;
+
+  if (!name)   { showToast('Enter a goal name!', 'error'); return; }
+  if (!target || target <= 0) { showToast('Enter a valid target amount!', 'error'); return; }
+  if (!deadline) { showToast('Select a deadline!', 'error'); return; }
+
+  const goals = loadGoals();
+  goals.push({ id: Date.now(), name, emoji, target, saved, deadline, color: '#6366f1' });
+  saveGoals(goals);
+  closeNewGoalModal();
+  renderGoals();
+
+  // Clear form
+  document.getElementById('newGoalName').value = '';
+  document.getElementById('newGoalTarget').value = '';
+  document.getElementById('newGoalSaved').value = '';
+  document.getElementById('newGoalEmoji').value = '🏆';
+
+  showToast(`"${name}" goal created!`, 'success');
+}
+
+// ---- Add Money ----
+function openAddMoney(id) {
+  addMoneyGoalId = id;
+  const goals = loadGoals();
+  const g = goals.find(g => g.id === id);
+  document.getElementById('addMoneyTitle').textContent = `Add Money to ${g.name}`;
+  document.getElementById('addMoneyInfo').textContent =
+    `Current: ${fmt(g.saved)} / ${fmt(g.target)} (${Math.round(g.saved/g.target*100)}% complete)`;
+  document.getElementById('addMoneyAmount').value = '';
+  document.getElementById('addMoneyModal').classList.remove('hidden');
+  document.getElementById('addMoneyModal').classList.add('flex');
+}
+function closeAddMoney() {
+  document.getElementById('addMoneyModal').classList.add('hidden');
+  document.getElementById('addMoneyModal').classList.remove('flex');
+  addMoneyGoalId = null;
+}
+function confirmAddMoney() {
+  const amt = parseFloat(document.getElementById('addMoneyAmount').value);
+  if (!amt || amt <= 0) { showToast('Enter a valid amount!', 'error'); return; }
+
+  const goals = loadGoals();
+  const idx = goals.findIndex(g => g.id === addMoneyGoalId);
+  goals[idx].saved = Math.min(goals[idx].saved + amt, goals[idx].target);
+  if (goals[idx].saved >= goals[idx].target) goals[idx].behindSchedule = false;
+  saveGoals(goals);
+  closeAddMoney();
+  renderGoals();
+  showToast(`${fmt(amt)} added to "${goals[idx].name}"!`, 'success');
+}
+
+// ---- Edit Goal (simple — just opens add money for now) ----
+function openEditGoal(id) {
+  openAddMoney(id);
+}
+
+// ---- Delete Goal ----
+function deleteGoal(id) {
+  if (!confirm('Delete this goal?')) return;
+  const goals = loadGoals().filter(g => g.id !== id);
+  saveGoals(goals);
+  renderGoals();
+  showToast('Goal deleted!', 'error');
+}
+
+// ---- Apply Allocation ----
+function applyAllocation() {
+  showToast('Allocation strategy saved to your plan!', 'success');
+}
+
+// ---- Toast ----
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = type==='success' ? 'check_circle' : 'error';
+  toast.style.backgroundColor = type==='success' ? '#22c55e' : '#ef4444';
+  toast.classList.remove('hidden');
+  toast.classList.add('flex','toast-show');
+  setTimeout(()=>{
+    toast.classList.add('toast-hide');
+    setTimeout(()=>{ toast.classList.add('hidden'); toast.classList.remove('flex','toast-show','toast-hide'); },300);
+  },2500);
+}
+
+// Close modals on backdrop
+['newGoalModal','addMoneyModal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    if (e.target === document.getElementById(id)) {
+      document.getElementById(id).classList.add('hidden');
+      document.getElementById(id).classList.remove('flex');
+    }
+  });
+});
+
+// Init
+renderGoals();
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

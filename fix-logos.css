@@ -1,0 +1,56 @@
+/* ================================
+   SmartSpend AI - Logo Fix
+   Works on ALL pages automatically
+   ================================ */
+
+/* Sidebar brand area - universal */
+.logo, .logo-area, [class*="logo"] h1,
+[class*="logo"] span,
+aside h1, aside .text-xl, aside .text-2xl, aside .text-lg {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  font-family: 'Manrope', sans-serif !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Logo image - same size everywhere */
+aside img[src*="logo"],
+aside img[alt*="logo"],
+aside img[alt*="SmartSpend"] {
+  height: 30px !important;
+  width: 30px !important;
+  object-fit: contain !important;
+  border-radius: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Pro Plan badge - consistent */
+aside span[class*="rounded-full"],
+aside span[class*="bg-primary"],
+aside span[class*="bg-indigo"],
+aside span[class*="bg-\[#6366f1\]"] {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 3px 10px !important;
+  border-radius: 20px !important;
+  background-color: #6366f1 !important;
+  color: white !important;
+  width: fit-content !important;
+}
+
+/* Nav text - consistent size */
+aside nav span[class*="text-sm"],
+aside nav span[class*="font-medium"] {
+  font-size: 13px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* User profile at bottom */
+aside .sidebar-user,
+aside [class*="user"] {
+  font-size: 13px !important;
+}

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transactions | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#6366f1",
+          "surface": "#0f172a",
+          "surface-container": "#1e293b",
+          "outline-variant": "#334155",
+          "on-surface": "#f8fafc",
+          "on-surface-variant": "#94a3b8"
+        },
+        fontFamily: {
+          "body": ["Inter", "sans-serif"],
+          "mono": ["JetBrains Mono", "monospace"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center;
+    width: 20px !important;
+    height: 20px !important;
+    overflow: hidden !important;
+    flex-shrink: 0;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+
+  /* Toast animation */
+  @keyframes slideIn {
+    from { transform: translateX(100px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to   { transform: translateX(100px); opacity: 0; }
+  }
+  .toast-show { animation: slideIn 0.3s ease forwards; }
+  .toast-hide { animation: slideOut 0.3s ease forwards; }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="font-body selection:bg-primary/30 overflow-x-hidden">
+
+<!-- Toast Notification -->
+<div id="toast" class="hidden fixed top-6 right-6 z-[200] px-5 py-3 rounded-xl text-white font-semibold text-sm flex items-center gap-3 shadow-2xl">
+  <span class="material-symbols-outlined" id="toastIcon" style="width:20px;height:20px;">check_circle</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface flex flex-col z-50">
+  <div class="px-6 py-5 border-b border-outline-variant">
+    <a href="index.html" class="flex items-center gap-2 mb-2" style="text-decoration:none;">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:28px;width:28px;object-fit:contain;border-radius:6px;flex-shrink:0;"
+        onerror="this.style.display='none'">
+      <span style="font-size:16px;font-weight:700;color:#f8fafc;font-family:'Manrope',sans-serif;white-space:nowrap;">SmartSpend AI</span>
+    </a>
+    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#6366f1] text-white">✨ Pro Plan</span>
+  </div>
+  <nav class="flex-1 px-3 py-3 space-y-1 overflow-y-auto no-scrollbar">
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="dashboard.html">
+      <span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 bg-[#6366f1] text-white font-semibold border-l-[3px] border-white px-4 py-2.5 rounded-lg" href="transactions.html">
+      <span class="material-symbols-outlined">credit_card</span><span class="text-sm font-semibold">Transactions</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="analytics.html">
+      <span class="material-symbols-outlined">monitoring</span><span class="text-sm font-medium">Analytics</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="budget-manager.html">
+      <span class="material-symbols-outlined">account_balance_wallet</span><span class="text-sm font-medium">Budgets</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="savings-goals.html">
+      <span class="material-symbols-outlined">emoji_events</span><span class="text-sm font-medium">Goals</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="ai-insights.html">
+      <span class="material-symbols-outlined">auto_awesome</span><span class="text-sm font-medium">AI Insights</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="reports.html">
+      <span class="material-symbols-outlined">description</span><span class="text-sm font-medium">Reports</span>
+    </a>
+    <a class="flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-700/50 px-4 py-2.5 rounded-lg transition-all" href="settings.html">
+      <span class="material-symbols-outlined">settings</span><span class="text-sm font-medium">Settings</span>
+    </a>
+  </nav>
+  <div class="px-4 py-4 space-y-4">
+    <div class="p-4 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#4f46e5] shadow-lg">
+      <p class="text-sm font-bold text-white mb-1">Unlock advanced AI</p>
+      <p class="text-xs text-white/80 mb-3">Get unlimited reports & insights</p>
+      <button class="w-full bg-white text-[#6366f1] py-1.5 rounded-lg text-xs font-bold">Upgrade →</button>
+    </div>
+    <div class="flex items-center gap-3 px-2 pt-3 border-t border-outline-variant">
+      <img src="assets/avatar.png" alt="Devanshu Goyal"
+        onerror="this.src='https://ui-avatars.com/api/?name=Devanshu+Goyal&background=6366f1&color=fff&size=40'"
+        class="w-10 h-10 rounded-full border-2 border-primary/20 object-cover flex-shrink-0">
+      <div class="overflow-hidden">
+        <p class="text-sm font-bold text-white truncate" data-user-name>Devanshu Goyal</p>
+        <p class="text-xs text-slate-400 truncate" data-user-email>devanshu@example.com</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="ml-64 min-h-screen bg-surface relative">
+
+  <!-- Header -->
+  <header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-20 z-40 bg-surface/80 backdrop-blur-md flex items-center justify-between px-10 border-b border-outline-variant/30">
+    <h2 class="text-xl font-bold text-white">Transactions</h2>
+    <div class="flex-1 max-w-xl mx-12">
+      <div class="relative flex items-center bg-surface-container rounded-full px-4 py-2.5 border border-outline-variant">
+        <span class="material-symbols-outlined text-on-surface-variant">search</span>
+        <input id="searchInput" class="bg-transparent border-none focus:ring-0 text-sm w-full text-on-surface ml-2 placeholder:text-on-surface-variant/60 outline-none" placeholder="Search transactions..." type="text" oninput="filterTransactions()"/>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <!-- Add Transaction Button -->
+      <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 bg-[#6366f1] text-white rounded-xl text-sm font-bold hover:bg-indigo-500 transition-all">
+        <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">add</span>
+        Add Transaction
+      </button>
+      <button class="relative p-2 text-on-surface-variant hover:text-white transition-colors">
+        <span class="material-symbols-outlined" style="font-size:24px;width:24px;height:24px;">notifications</span>
+        <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#0f172a]"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="pt-28 px-10 pb-16">
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
+        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Total Income</p>
+        <p id="totalIncome" class="text-xl font-bold text-green-400">₹0</p>
+      </div>
+      <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
+        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Total Expenses</p>
+        <p id="totalExpense" class="text-xl font-bold text-red-400">₹0</p>
+      </div>
+      <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
+        <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Net Savings</p>
+        <p id="netSavings" class="text-xl font-bold text-indigo-400">₹0</p>
+      </div>
+    </div>
+
+    <!-- Filter Row -->
+    <div class="flex items-center gap-3 mb-4">
+      <button onclick="setFilter('all')" id="filterAll" class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[#6366f1] text-white transition-all">All</button>
+      <button onclick="setFilter('income')" id="filterIncome" class="px-4 py-1.5 rounded-full text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">Income</button>
+      <button onclick="setFilter('expense')" id="filterExpense" class="px-4 py-1.5 rounded-full text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">Expense</button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-surface-container rounded-2xl overflow-hidden shadow-2xl border border-outline-variant/30">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-800/50 text-on-surface-variant text-[11px] uppercase tracking-widest font-bold">
+            <th class="py-4 px-6 w-12"><input id="selectAll" type="checkbox" class="rounded bg-slate-700 border-slate-600 text-primary" onchange="toggleSelectAll(this)"/></th>
+            <th class="py-4 px-4">Date</th>
+            <th class="py-4 px-4">Category</th>
+            <th class="py-4 px-4">Description</th>
+            <th class="py-4 px-4">Method</th>
+            <th class="py-4 px-4 text-right">Amount</th>
+            <th class="py-4 px-6 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="transactionBody" class="divide-y divide-outline-variant/20">
+          <!-- Rows rendered by JS -->
+        </tbody>
+      </table>
+
+      <!-- Bottom Controls -->
+      <div class="px-6 py-4 bg-slate-800/30 flex items-center justify-between border-t border-outline-variant/20">
+        <button onclick="deleteSelected()" class="px-4 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10 rounded-lg transition-all flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">delete_sweep</span>
+          Delete selected
+        </button>
+        <p id="countText" class="text-[11px] text-on-surface-variant font-medium">Showing 0 transactions</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Add/Edit Transaction Modal -->
+<div id="modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+  <div class="bg-surface-container w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant overflow-hidden">
+    
+    <div class="p-6 border-b border-outline-variant/30 flex items-center justify-between">
+      <h3 id="modalTitle" class="text-xl font-bold text-white">Add Transaction</h3>
+      <button onclick="closeModal()" class="text-on-surface-variant hover:text-white transition-all">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <!-- Type Toggle -->
+      <div class="flex p-1 bg-slate-900 rounded-xl">
+        <button id="btnIncome" onclick="setType('income')" class="flex-1 py-2 text-sm font-bold rounded-lg transition-all text-slate-400">Income</button>
+        <button id="btnExpense" onclick="setType('expense')" class="flex-1 py-2 text-sm font-bold bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg transition-all">Expense</button>
+      </div>
+
+      <!-- Amount -->
+      <div>
+        <label class="text-xs text-slate-400 uppercase tracking-wider mb-1 block">Amount (₹)</label>
+        <input id="inputAmount" type="number" placeholder="0.00" min="0"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-2xl font-bold focus:ring-2 focus:ring-indigo-500 outline-none"/>
+      </div>
+
+      <!-- Category + Date -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs text-slate-400 uppercase tracking-wider mb-1 block">Category</label>
+          <select id="inputCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+            <option value="🍕 Food">🍕 Food</option>
+            <option value="🛒 Shopping">🛒 Shopping</option>
+            <option value="🚗 Transport">🚗 Transport</option>
+            <option value="⚡ Utilities">⚡ Utilities</option>
+            <option value="🎬 Entertainment">🎬 Entertainment</option>
+            <option value="💊 Health">💊 Health</option>
+            <option value="🎓 Education">🎓 Education</option>
+            <option value="📈 Investment">📈 Investment</option>
+            <option value="💼 Salary">💼 Salary</option>
+            <option value="🏠 Rent">🏠 Rent</option>
+            <option value="🍔 Dining">🍔 Dining</option>
+            <option value="✈️ Travel">✈️ Travel</option>
+            <option value="💡 Other">💡 Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 uppercase tracking-wider mb-1 block">Date</label>
+          <input id="inputDate" type="date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none"/>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="text-xs text-slate-400 uppercase tracking-wider mb-1 block">Description</label>
+        <input id="inputDesc" type="text" placeholder="e.g. Weekly grocery shopping"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none"/>
+      </div>
+
+      <!-- Payment Method -->
+      <div>
+        <label class="text-xs text-slate-400 uppercase tracking-wider mb-1 block">Payment Method</label>
+        <div class="flex gap-2">
+          <button onclick="setMethod('UPI')" id="m-UPI" class="method-btn px-4 py-1.5 rounded-lg text-sm font-semibold bg-[#6366f1] text-white transition-all">UPI</button>
+          <button onclick="setMethod('Card')" id="m-Card" class="method-btn px-4 py-1.5 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">Card</button>
+          <button onclick="setMethod('Bank')" id="m-Bank" class="method-btn px-4 py-1.5 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">Bank</button>
+          <button onclick="setMethod('Cash')" id="m-Cash" class="method-btn px-4 py-1.5 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">Cash</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6 bg-slate-900 flex items-center justify-end gap-4">
+      <button onclick="closeModal()" class="px-6 py-2.5 text-sm font-bold text-on-surface-variant hover:text-white transition-all">Cancel</button>
+      <button onclick="saveTransaction()" class="px-8 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-indigo-500 transition-all" id="saveBtn">Add Transaction</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// SmartSpend AI — Transactions Logic
+// localStorage key: 'smartspend_transactions'
+// ============================================================
+
+// Default sample data (loads only once on first visit)
+const DEFAULT_TRANSACTIONS = [
+  { id: 1, date: '2026-03-20', category: '🍕 Food',          desc: 'Swiggy Order',          method: 'UPI',  amount: 340,    type: 'expense' },
+  { id: 2, date: '2026-03-20', category: '💼 Salary',        desc: 'March Monthly Salary',   method: 'Bank', amount: 45000,  type: 'income'  },
+  { id: 3, date: '2026-03-19', category: '🛒 Shopping',      desc: 'Amazon — Headphones',    method: 'Card', amount: 1240,   type: 'expense' },
+  { id: 4, date: '2026-03-18', category: '🚗 Transport',     desc: 'Uber Ride to Office',    method: 'UPI',  amount: 180,    type: 'expense' },
+  { id: 5, date: '2026-03-17', category: '💊 Health',        desc: 'Apollo Pharmacy',        method: 'UPI',  amount: 890,    type: 'expense' },
+  { id: 6, date: '2026-03-16', category: '🎬 Entertainment', desc: 'Netflix Subscription',   method: 'Card', amount: 499,    type: 'expense' },
+  { id: 7, date: '2026-03-15', category: '⚡ Utilities',     desc: 'Electricity Bill',       method: 'Bank', amount: 2150,   type: 'expense' },
+  { id: 8, date: '2026-03-14', category: '📈 Investment',    desc: 'Stock Dividend',         method: 'Bank', amount: 1200,   type: 'income'  },
+];
+
+// ---- State ----
+let transactions = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let editingId = null;
+let selectedMethod = 'UPI';
+let selectedType = 'expense';
+
+// ---- Load from localStorage ----
+function loadData() {
+  const saved = localStorage.getItem('smartspend_transactions');
+  if (saved) {
+    transactions = JSON.parse(saved);
+  } else {
+    transactions = DEFAULT_TRANSACTIONS;
+    saveData();
+  }
+}
+
+function saveData() {
+  localStorage.setItem('smartspend_transactions', JSON.stringify(transactions));
+}
+
+// ---- Render Table ----
+function renderTable() {
+  const tbody = document.getElementById('transactionBody');
+  let filtered = transactions;
+
+  // Filter by type
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(t => t.type === currentFilter);
+  }
+
+  // Filter by search
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(t =>
+      t.desc.toLowerCase().includes(q) ||
+      t.category.toLowerCase().includes(q) ||
+      t.method.toLowerCase().includes(q)
+    );
+  }
+
+  // Sort newest first
+  filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // Update count
+  document.getElementById('countText').textContent = `Showing ${filtered.length} transaction${filtered.length !== 1 ? 's' : ''}`;
+
+  // Render rows
+  tbody.innerHTML = filtered.length === 0
+    ? `<tr><td colspan="7" class="text-center py-12 text-slate-500">No transactions found</td></tr>`
+    : filtered.map(t => buildRow(t)).join('');
+
+  // Update summary
+  updateSummary();
+}
+
+function buildRow(t) {
+  const dateObj = new Date(t.date);
+  const dateStr = dateObj.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+  const isIncome = t.type === 'income';
+  const amtStr = isIncome
+    ? `<span class="text-sm font-bold text-green-500 font-mono">+₹${t.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}</span>`
+    : `<span class="text-sm font-bold text-red-500 font-mono">-₹${t.amount.toLocaleString('en-IN', {minimumFractionDigits:2})}</span>`;
+
+  const catColor = getCatColor(t.category);
+
+  return `
+  <tr class="group hover:bg-slate-800/30 transition-all">
+    <td class="py-4 px-6"><input type="checkbox" class="row-check rounded bg-slate-700 border-slate-600 text-primary" data-id="${t.id}"/></td>
+    <td class="py-4 px-4 text-sm text-on-surface font-medium">${dateStr}</td>
+    <td class="py-4 px-4">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${catColor}">${t.category}</span>
+    </td>
+    <td class="py-4 px-4 text-sm font-semibold text-on-surface">${t.desc}</td>
+    <td class="py-4 px-4">
+      <span class="px-2 py-0.5 rounded bg-slate-700 text-slate-400 text-[10px] font-medium">${t.method}</span>
+    </td>
+    <td class="py-4 px-4 text-right">${amtStr}</td>
+    <td class="py-4 px-6 text-right">
+      <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button onclick="editTransaction(${t.id})" class="p-1 hover:text-indigo-400 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">edit</span>
+        </button>
+        <button onclick="deleteTransaction(${t.id})" class="p-1 hover:text-red-500 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">delete</span>
+        </button>
+      </div>
+    </td>
+  </tr>`;
+}
+
+function getCatColor(cat) {
+  const map = {
+    '🍕 Food':          'bg-orange-500/10 text-orange-400 ring-1 ring-orange-500/20',
+    '🍔 Dining':        'bg-orange-500/10 text-orange-400 ring-1 ring-orange-500/20',
+    '🛒 Shopping':      'bg-blue-500/10 text-blue-400 ring-1 ring-blue-500/20',
+    '🚗 Transport':     'bg-cyan-500/10 text-cyan-400 ring-1 ring-cyan-500/20',
+    '⚡ Utilities':     'bg-yellow-500/10 text-yellow-400 ring-1 ring-yellow-500/20',
+    '🎬 Entertainment': 'bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/20',
+    '💊 Health':        'bg-pink-500/10 text-pink-400 ring-1 ring-pink-500/20',
+    '🎓 Education':     'bg-purple-500/10 text-purple-400 ring-1 ring-purple-500/20',
+    '📈 Investment':    'bg-green-500/10 text-green-400 ring-1 ring-green-500/20',
+    '💼 Salary':        'bg-green-500/10 text-green-400 ring-1 ring-green-500/20',
+    '🏠 Rent':          'bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20',
+    '✈️ Travel':        'bg-sky-500/10 text-sky-400 ring-1 ring-sky-500/20',
+    '💡 Other':         'bg-slate-500/10 text-slate-400 ring-1 ring-slate-500/20',
+  };
+  return map[cat] || 'bg-slate-500/10 text-slate-400';
+}
+
+function updateSummary() {
+  const income  = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+  const expense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+  const net     = income - expense;
+
+  const fmt = (n) => '₹' + Math.abs(n).toLocaleString('en-IN', {minimumFractionDigits: 0});
+
+  document.getElementById('totalIncome').textContent  = fmt(income);
+  document.getElementById('totalExpense').textContent = fmt(expense);
+  const el = document.getElementById('netSavings');
+  el.textContent = (net >= 0 ? '' : '-') + fmt(net);
+  el.className = `text-xl font-bold ${net >= 0 ? 'text-indigo-400' : 'text-red-400'}`;
+}
+
+// ---- Modal ----
+function openModal(id = null) {
+  editingId = id;
+  document.getElementById('modal').classList.remove('hidden');
+  document.getElementById('modal').classList.add('flex');
+
+  // Set today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('inputDate').value = today;
+
+  if (id) {
+    // Edit mode
+    const t = transactions.find(t => t.id === id);
+    document.getElementById('modalTitle').textContent = 'Edit Transaction';
+    document.getElementById('saveBtn').textContent = 'Save Changes';
+    document.getElementById('inputAmount').value = t.amount;
+    document.getElementById('inputCategory').value = t.category;
+    document.getElementById('inputDate').value = t.date;
+    document.getElementById('inputDesc').value = t.desc;
+    setMethod(t.method);
+    setType(t.type);
+  } else {
+    // Add mode
+    document.getElementById('modalTitle').textContent = 'Add Transaction';
+    document.getElementById('saveBtn').textContent = 'Add Transaction';
+    document.getElementById('inputAmount').value = '';
+    document.getElementById('inputDesc').value = '';
+    document.getElementById('inputCategory').value = '🍕 Food';
+    setMethod('UPI');
+    setType('expense');
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden');
+  document.getElementById('modal').classList.remove('flex');
+  editingId = null;
+}
+
+// ---- Type Toggle ----
+function setType(type) {
+  selectedType = type;
+  const btnI = document.getElementById('btnIncome');
+  const btnE = document.getElementById('btnExpense');
+  if (type === 'income') {
+    btnI.className = 'flex-1 py-2 text-sm font-bold bg-green-500/20 text-green-400 border border-green-500/30 rounded-lg transition-all';
+    btnE.className = 'flex-1 py-2 text-sm font-bold text-slate-400 rounded-lg transition-all';
+  } else {
+    btnE.className = 'flex-1 py-2 text-sm font-bold bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg transition-all';
+    btnI.className = 'flex-1 py-2 text-sm font-bold text-slate-400 rounded-lg transition-all';
+  }
+}
+
+// ---- Method Toggle ----
+function setMethod(method) {
+  selectedMethod = method;
+  ['UPI','Card','Bank','Cash'].forEach(m => {
+    const btn = document.getElementById('m-' + m);
+    if (m === method) {
+      btn.className = 'method-btn px-4 py-1.5 rounded-lg text-sm font-semibold bg-[#6366f1] text-white transition-all';
+    } else {
+      btn.className = 'method-btn px-4 py-1.5 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all';
+    }
+  });
+}
+
+// ---- Save Transaction ----
+function saveTransaction() {
+  const amount = parseFloat(document.getElementById('inputAmount').value);
+  const category = document.getElementById('inputCategory').value;
+  const date = document.getElementById('inputDate').value;
+  const desc = document.getElementById('inputDesc').value.trim();
+
+  if (!amount || amount <= 0) { showToast('Enter a valid amount!', 'error'); return; }
+  if (!desc) { showToast('Enter a description!', 'error'); return; }
+  if (!date) { showToast('Select a date!', 'error'); return; }
+
+  if (editingId) {
+    // Update existing
+    const idx = transactions.findIndex(t => t.id === editingId);
+    transactions[idx] = { id: editingId, date, category, desc, method: selectedMethod, amount, type: selectedType };
+    showToast('Transaction updated!', 'success');
+  } else {
+    // Add new
+    const newId = Date.now();
+    transactions.push({ id: newId, date, category, desc, method: selectedMethod, amount, type: selectedType });
+    showToast('Transaction added!', 'success');
+  }
+
+  saveData();
+  closeModal();
+  renderTable();
+}
+
+// ---- Edit ----
+function editTransaction(id) {
+  openModal(id);
+}
+
+// ---- Delete single ----
+function deleteTransaction(id) {
+  if (!confirm('Delete this transaction?')) return;
+  transactions = transactions.filter(t => t.id !== id);
+  saveData();
+  renderTable();
+  showToast('Transaction deleted!', 'error');
+}
+
+// ---- Delete selected ----
+function deleteSelected() {
+  const checked = [...document.querySelectorAll('.row-check:checked')].map(c => parseInt(c.dataset.id));
+  if (checked.length === 0) { showToast('No transactions selected!', 'error'); return; }
+  if (!confirm(`Delete ${checked.length} transaction(s)?`)) return;
+  transactions = transactions.filter(t => !checked.includes(t.id));
+  saveData();
+  renderTable();
+  showToast(`${checked.length} transaction(s) deleted!`, 'error');
+}
+
+// ---- Select All ----
+function toggleSelectAll(cb) {
+  document.querySelectorAll('.row-check').forEach(c => c.checked = cb.checked);
+}
+
+// ---- Filter ----
+function setFilter(f) {
+  currentFilter = f;
+  ['all','income','expense'].forEach(x => {
+    const btn = document.getElementById('filter' + x.charAt(0).toUpperCase() + x.slice(1));
+    if (x === f) {
+      btn.className = 'px-4 py-1.5 rounded-full text-sm font-semibold bg-[#6366f1] text-white transition-all';
+    } else {
+      btn.className = 'px-4 py-1.5 rounded-full text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all';
+    }
+  });
+  renderTable();
+}
+
+// ---- Search ----
+function filterTransactions() {
+  currentSearch = document.getElementById('searchInput').value;
+  renderTable();
+}
+
+// ---- Toast ----
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  const toastIcon = document.getElementById('toastIcon');
+
+  toastMsg.textContent = msg;
+  toast.className = toast.className.replace(/bg-\S+/g, '');
+
+  if (type === 'success') {
+    toast.style.backgroundColor = '#22c55e';
+    toastIcon.textContent = 'check_circle';
+  } else {
+    toast.style.backgroundColor = '#ef4444';
+    toastIcon.textContent = 'error';
+  }
+
+  toast.classList.remove('hidden');
+  toast.classList.add('flex', 'toast-show');
+
+  setTimeout(() => {
+    toast.classList.add('toast-hide');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+      toast.classList.remove('flex', 'toast-show', 'toast-hide');
+    }, 300);
+  }, 2500);
+}
+
+// Close modal on backdrop click
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ---- Init ----
+loadData();
+renderTable();
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

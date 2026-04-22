@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SmartSpend AI - Track Smarter, Save More</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#005321",
+              "tertiary": "#4ae176",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "surface-tint": "#c0c1ff",
+              "on-tertiary-container": "#003111",
+              "outline": "#908fa0",
+              "surface-variant": "#2d3449",
+              "inverse-on-surface": "#283044",
+              "on-secondary-container": "#a7b6cc",
+              "error": "#ffb4ab",
+              "tertiary-fixed": "#6bff8f",
+              "on-background": "#dae2fd",
+              "inverse-surface": "#dae2fd",
+              "surface-container-lowest": "#060e20",
+              "on-surface": "#dae2fd",
+              "on-error-container": "#ffdad6",
+              "inverse-primary": "#494bd6",
+              "secondary": "#b9c8de",
+              "tertiary-fixed-dim": "#4ae176",
+              "secondary-fixed-dim": "#b9c8de",
+              "on-primary": "#1000a9",
+              "on-secondary-fixed": "#0d1c2d",
+              "primary-fixed": "#e1e0ff",
+              "on-primary-fixed": "#07006c",
+              "on-secondary": "#233143",
+              "error-container": "#93000a",
+              "tertiary-container": "#00a74b",
+              "primary-container": "#8083ff",
+              "primary-fixed-dim": "#c0c1ff",
+              "background": "#0b1326",
+              "primary": "#c0c1ff",
+              "surface-dim": "#0b1326",
+              "on-primary-container": "#0d0096",
+              "outline-variant": "#464554",
+              "surface-container-high": "#222a3d",
+              "surface-container-low": "#131b2e",
+              "surface": "#0b1326",
+              "on-error": "#690005",
+              "secondary-container": "#39485a",
+              "surface-container-highest": "#2d3449",
+              "on-tertiary": "#003915",
+              "on-tertiary-fixed": "#002109",
+              "surface-container": "#171f33",
+              "on-secondary-fixed-variant": "#39485a",
+              "surface-bright": "#31394d",
+              "on-surface-variant": "#c7c4d7",
+              "secondary-fixed": "#d4e4fa"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b1326; color: #dae2fd; }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(49, 57, 77, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(192, 193, 255, 0.1); }
+        .ai-gradient-border { border: 1px solid transparent; background: linear-gradient(#171f33, #171f33) padding-box, linear-gradient(to right, #c0c1ff, transparent) border-box; }
+    </style>
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body class="selection:bg-primary/30">
+<!-- TOP NAV BAR -->
+<nav class="sticky top-0 z-50 w-full bg-slate-900/60 backdrop-blur-xl shadow-xl shadow-indigo-900/10">
+<div class="flex justify-between items-center h-20 px-10 max-w-7xl mx-auto">
+<div class="text-xl font-bold text-white flex items-center gap-2 font-headline">
+<a href="index.html" style="
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 20px 16px 8px;
+  display: flex;
+">
+  <img 
+    src="assets/logo.png" 
+    alt="SmartSpend AI" 
+    style="
+      height: 36px;
+      width: 36px;
+      object-fit: contain;
+      border-radius: 8px;
+    "
+  >
+  <span style="
+    font-size: 18px;
+    font-weight: 700;
+    color: #f8fafc;
+    font-family: 'Manrope', sans-serif;
+  ">SmartSpend AI</span>
+</a>
+</div>
+
+<div class="hidden md:flex items-center gap-8">
+<a class="text-indigo-300 border-b-2 border-indigo-400 pb-1 text-sm font-medium font-label" href="#">Features</a>
+<a class="text-slate-400 hover:text-white transition-colors text-sm font-medium font-label" href="#">How it works</a>
+<a class="text-slate-400 hover:text-white transition-colors text-sm font-medium font-label" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-6">
+<a href="login.html" class="text-indigo-300 dark:text-indigo-200 text-sm font-medium font-label hover:bg-white/5 px-4 py-2 rounded-lg transition-all duration-300">Login</a>
+<a href="signup.html" class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-lg text-sm font-bold font-label hover:scale-95 transition-all duration-200 shadow-lg shadow-primary/20">Get Started Free</a>
+</div>
+</div>
+</nav>
+<!-- HERO SECTION -->
+<section class="relative pt-20 pb-32 overflow-hidden">
+<div class="max-w-7xl mx-auto px-10 grid lg:grid-cols-2 gap-16 items-center">
+<div class="relative z-10">
+<h1 class="text-5xl md:text-7xl font-extrabold font-headline leading-tight tracking-tight mb-6">
+                    Track <span class="text-primary italic">Smarter</span>,<br/>Save More with AI
+                </h1>
+<p class="text-lg text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+                    AI-powered expense tracking that understands your spending patterns and helps you save more every month. Join the financial revolution.
+                </p>
+<div class="flex flex-wrap gap-4 mb-8">
+<a href="signup.html" class="bg-primary-container text-on-primary-container px-8 py-4 rounded-lg font-bold flex items-center gap-2 hover:shadow-[0_0_20px_rgba(192,193,255,0.4)] transition-all">
+  Start for Free <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<button class="border border-outline-variant/20 px-8 py-4 rounded-lg font-semibold hover:bg-surface-bright transition-colors">
+                        Watch Demo
+                    </button>
+</div>
+<div class="flex items-center gap-3 text-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="verified">verified</span>
+                    Free forever · No credit card · 350 AI generations/month
+                </div>
+</div>
+<!-- Floating Dashboard UI -->
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/10 blur-3xl rounded-full"></div>
+<div class="glass-card p-8 rounded-xl relative overflow-hidden transition-transform duration-500 hover:-translate-y-2">
+<div class="flex justify-between items-start mb-8">
+<div>
+<p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1">Total Balance</p>
+<h2 class="text-4xl font-bold font-headline"><span class="font-light opacity-60">₹</span>45,000</h2>
+</div>
+<div class="bg-primary-container/20 p-3 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="insights">insights</span>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-tertiary text-sm" data-icon="arrow_upward">arrow_upward</span> Income</span>
+<span class="font-semibold text-tertiary">₹65,000</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-4/5 shadow-[0_0_10px_rgba(74,225,118,0.4)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-error text-sm" data-icon="arrow_downward">arrow_downward</span> Expenses</span>
+<span class="font-semibold text-error">₹20,000</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full w-1/3 shadow-[0_0_10px_rgba(255,180,171,0.4)]"></div>
+</div>
+</div>
+</div>
+<!-- AI Badge Overlay -->
+<div class="mt-8 ai-gradient-border p-4 rounded-lg flex items-start gap-3 bg-surface-container/50">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<p class="text-sm font-semibold text-primary mb-1">AI Insight</p>
+<p class="text-xs text-on-surface-variant">You spent 15% more on dining this week compared to last month. Consider a home meal.</p>
+</div>
+</div>
+</div>
+<!-- Floating Mini Card -->
+<div class="absolute -bottom-6 -right-6 glass-card p-4 rounded-lg shadow-2xl hidden md:block border-primary/20">
+<div class="flex items-center gap-3">
+<div class="bg-tertiary/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-tertiary text-base" data-icon="savings">savings</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-tight">Daily Goal</p>
+<p class="text-sm font-bold">₹850 Left</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- STATS BAR -->
+<section class="max-w-7xl mx-auto px-10 mb-24">
+<div class="bg-surface-container-low p-8 rounded-2xl flex flex-wrap justify-around items-center gap-10 border border-outline-variant/10">
+<div class="text-center">
+<p class="text-3xl font-bold font-headline text-white">10,000+</p>
+<p class="text-sm text-on-surface-variant font-medium">Active Users</p>
+</div>
+<div class="h-10 w-px bg-outline-variant/20 hidden md:block"></div>
+<div class="text-center">
+<p class="text-3xl font-bold font-headline text-white">₹2.5Cr</p>
+<p class="text-sm text-on-surface-variant font-medium">Total Saved</p>
+</div>
+<div class="h-10 w-px bg-outline-variant/20 hidden md:block"></div>
+<div class="text-center">
+<p class="text-3xl font-bold font-headline text-white">98%</p>
+<p class="text-sm text-on-surface-variant font-medium">AI Accuracy</p>
+</div>
+</div>
+</section>
+<!-- FEATURES GRID -->
+<section class="max-w-7xl mx-auto px-10 py-20">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold font-headline mb-4">Everything you need to master your finances</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto leading-relaxed">Built for the future of money management with enterprise-grade security and advanced intelligence.</p>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Feature Card 1 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all group">
+<div class="bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-3 text-white">AI Spending Analysis</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Deeper insights into where your money goes with automatic pattern recognition.</p>
+</div>
+<!-- Feature Card 2 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all group">
+<div class="bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="category">category</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-3 text-white">Smart Auto-categorize</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Never manually label a transaction again. Our AI handles it with pinpoint accuracy.</p>
+</div>
+<!-- Feature Card 3 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all group">
+<div class="bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance">account_balance</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-3 text-white">Budget Manager</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Set dynamic budgets that adapt to your lifestyle and financial goals.</p>
+</div>
+<!-- Feature Card 4 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all group">
+<div class="bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="bar_chart">bar_chart</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-3 text-white">Visual Analytics</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Beautifully crafted charts and graphs that make complex data easy to understand.</p>
+</div>
+<!-- Feature Card 5 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all group">
+<div class="bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-3 text-white">PDF Reports</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Generate detailed financial reports for tax purposes or personal review in one click.</p>
+</div>
+<!-- Feature Card 6 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 hover:bg-surface-bright transition-all group">
+<div class="bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="target">target</span>
+</div>
+<h3 class="text-xl font-bold font-headline mb-3 text-white">Savings Goals</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Track progress towards your dreams with intelligent forecasting and reminders.</p>
+</div>
+</div>
+</section>
+<!-- HOW IT WORKS -->
+<section class="max-w-7xl mx-auto px-10 py-24 bg-surface-container-low/30 rounded-[3rem] my-20">
+<div class="text-center mb-20">
+<h2 class="text-4xl font-bold font-headline">Three steps to financial freedom</h2>
+</div>
+<div class="grid md:grid-cols-3 gap-12 relative">
+<!-- Connector Line -->
+<div class="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent -translate-y-16 hidden md:block"></div>
+<div class="relative text-center">
+<div class="w-16 h-16 bg-surface-container border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-8 relative z-10 shadow-xl">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="add_card">add_card</span>
+<div class="absolute -top-2 -right-2 w-7 h-7 bg-primary text-on-primary rounded-full text-xs font-bold flex items-center justify-center">1</div>
+</div>
+<h4 class="text-xl font-bold mb-4 font-headline">Add Transaction</h4>
+<p class="text-sm text-on-surface-variant">Sync your bank or manually add expenses in seconds with our intuitive interface.</p>
+</div>
+<div class="relative text-center">
+<div class="w-16 h-16 bg-surface-container border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-8 relative z-10 shadow-xl">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="neurology">neurology</span>
+<div class="absolute -top-2 -right-2 w-7 h-7 bg-primary text-on-primary rounded-full text-xs font-bold flex items-center justify-center">2</div>
+</div>
+<h4 class="text-xl font-bold mb-4 font-headline">AI Analyzes</h4>
+<p class="text-sm text-on-surface-variant">Our engine categorizes and checks for patterns, anomalies, and potential savings.</p>
+</div>
+<div class="relative text-center">
+<div class="w-16 h-16 bg-surface-container border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-8 relative z-10 shadow-xl">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="emoji_objects">emoji_objects</span>
+<div class="absolute -top-2 -right-2 w-7 h-7 bg-primary text-on-primary rounded-full text-xs font-bold flex items-center justify-center">3</div>
+</div>
+<h4 class="text-xl font-bold mb-4 font-headline">Get Insights</h4>
+<p class="text-sm text-on-surface-variant">Receive personalized suggestions to optimize your spending and grow your wealth.</p>
+</div>
+</div>
+</section>
+<!-- TESTIMONIALS -->
+<section class="max-w-7xl mx-auto px-10 py-20">
+<h2 class="text-3xl font-bold font-headline mb-12 text-center">Loved by thousands across India</h2>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Testimonial 1 -->
+<div class="glass-card p-8 rounded-2xl border border-primary/10 flex flex-col gap-6 hover:bg-surface-bright/20 transition-all">
+<div class="flex text-tertiary gap-0.5">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface leading-relaxed italic text-lg">
+        "Meri savings 40% badh gayi in 3 months! This app is a lifesaver."
+    </p>
+<div class="flex items-center gap-4 mt-auto">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary font-headline">
+            PS
+        </div>
+<div>
+<p class="font-bold text-white">Priya Sharma</p>
+<p class="text-xs text-on-surface-variant">Mumbai, MH</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="glass-card p-8 rounded-2xl border border-primary/10 flex flex-col gap-6 hover:bg-surface-bright/20 transition-all">
+<div class="flex text-tertiary gap-0.5">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface leading-relaxed italic text-lg">
+        "Best fintech app for UPI tracking. AI insights are actually smart."
+    </p>
+<div class="flex items-center gap-4 mt-auto">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary font-headline">
+            AV
+        </div>
+<div>
+<p class="font-bold text-white">Anish Verma</p>
+<p class="text-xs text-on-surface-variant">Bangalore, KA</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="glass-card p-8 rounded-2xl border border-primary/10 flex flex-col gap-6 hover:bg-surface-bright/20 transition-all">
+<div class="flex text-tertiary gap-0.5">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface leading-relaxed italic text-lg">
+        "Finally an app that understands Indian spending habits. Simple and clean."
+    </p>
+<div class="flex items-center gap-4 mt-auto">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary font-headline">
+            RG
+        </div>
+<div>
+<p class="font-bold text-white">Rahul Gupta</p>
+<p class="text-xs text-on-surface-variant">Delhi, NCR</p>
+</div>
+</div>
+</div></div>
+</section>
+<!-- PRICING -->
+<section class="max-w-7xl mx-auto px-10 py-32">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold font-headline mb-4">Pricing built for everyone</h2>
+<p class="text-on-surface-variant">Choose the plan that fits your financial journey.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+<!-- Free Plan -->
+<div class="bg-surface-container p-10 rounded-2xl border border-outline-variant/10 flex flex-col h-full transition-transform hover:-translate-y-1">
+<div class="mb-8">
+<h3 class="text-xl font-bold font-headline mb-2">Free Plan</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-white">₹0</span>
+<span class="text-on-surface-variant text-sm">/month</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        AI Expense Tracking
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        350 AI Generations
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Monthly PDF Reports
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant opacity-50">
+<span class="material-symbols-outlined text-lg" data-icon="cancel">cancel</span>
+                        Multi-device Sync
+                    </li>
+</ul>
+<button class="w-full border border-outline-variant/20 py-3 rounded-lg font-bold hover:bg-surface-bright transition-colors">Current Plan</button>
+</div>
+<!-- Pro Plan -->
+<div class="bg-surface-container p-10 rounded-2xl relative border border-primary ring-1 ring-primary/30 flex flex-col h-full shadow-[0_0_40px_rgba(192,193,255,0.15)] transition-transform hover:-translate-y-1">
+<div class="absolute -top-4 right-8 bg-primary text-on-primary px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Most Popular</div>
+<div class="mb-8">
+<h3 class="text-xl font-bold font-headline mb-2 text-primary">Pro Plan</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-white">₹499</span>
+<span class="text-on-surface-variant text-sm">/month</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Everything in Free
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Unlimited AI Generations
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Advanced Saving Insights
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Priority 24/7 Support
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Multi-device Sync
+                    </li>
+</ul>
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold hover:shadow-[0_0_20px_rgba(192,193,255,0.4)] transition-all">Go Pro Now</button>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer class="bg-slate-950 w-full border-t border-slate-800/50">
+<div class="flex flex-col md:flex-row justify-between items-center py-12 px-10 max-w-7xl mx-auto gap-8">
+<div class="text-lg font-black text-white font-headline">SmartSpend AI</div>
+<div class="flex flex-col items-center md:items-start">
+<p class="text-slate-400 text-sm font-body">© 2024 SmartSpend AI. Made with ❤️ in India</p>
+</div>
+<div class="flex gap-8">
+<a class="text-slate-500 hover:text-indigo-400 transition-colors text-sm font-body" href="#">Privacy</a>
+<a class="text-slate-500 hover:text-indigo-400 transition-colors text-sm font-body" href="#">Terms</a>
+<a class="text-slate-500 hover:text-indigo-400 transition-colors text-sm font-body" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<script src="auth.js"></script>
+</body></html>

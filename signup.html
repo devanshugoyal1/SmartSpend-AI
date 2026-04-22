@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  body { background-color:#0f172a; color:#f8fafc; font-family:'Inter',sans-serif; }
+  .material-symbols-outlined {
+    font-family:'Material Symbols Outlined' !important;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-size:20px !important; line-height:1 !important;
+    display:inline-flex !important; align-items:center;
+    width:20px !important; height:20px !important;
+    overflow:hidden !important; flex-shrink:0;
+  }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .slide-up { animation:slideUp 0.4s ease forwards; }
+  .strength-bar { transition: width 0.3s ease, background-color 0.3s ease; }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="min-h-screen flex">
+
+<!-- Left Panel -->
+<div class="hidden lg:flex w-1/2 bg-gradient-to-br from-indigo-900/40 via-slate-900 to-slate-900 flex-col items-center justify-center p-16 relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+  <div class="absolute bottom-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-[80px]"></div>
+
+  <div class="relative z-10 text-center">
+    <div class="flex items-center justify-center gap-3 mb-12">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:48px;width:48px;object-fit:contain;border-radius:10px;" onerror="this.style.display='none'">
+      <span style="font-size:28px;font-weight:800;color:#f8fafc;font-family:'Manrope',sans-serif;">SmartSpend AI</span>
+    </div>
+
+    <!-- Features List -->
+    <div class="space-y-4 text-left">
+      <div class="flex items-start gap-4 bg-slate-800/50 rounded-xl p-4 border border-slate-700/30">
+        <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-green-400" style="font-size:20px;width:20px;height:20px;">check_circle</span>
+        </div>
+        <div>
+          <p class="font-semibold text-white text-sm">Free Forever</p>
+          <p class="text-xs text-slate-400">No credit card required. Start tracking instantly.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 bg-slate-800/50 rounded-xl p-4 border border-slate-700/30">
+        <div class="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-indigo-400" style="font-size:20px;width:20px;height:20px;">smart_toy</span>
+        </div>
+        <div>
+          <p class="font-semibold text-white text-sm">AI-Powered Insights</p>
+          <p class="text-xs text-slate-400">Gemini AI analyzes your spending patterns.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 bg-slate-800/50 rounded-xl p-4 border border-slate-700/30">
+        <div class="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-amber-400" style="font-size:20px;width:20px;height:20px;">security</span>
+        </div>
+        <div>
+          <p class="font-semibold text-white text-sm">100% Private</p>
+          <p class="text-xs text-slate-400">Your data stays on your device. No servers.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 bg-slate-800/50 rounded-xl p-4 border border-slate-700/30">
+        <div class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-purple-400" style="font-size:20px;width:20px;height:20px;">emoji_events</span>
+        </div>
+        <div>
+          <p class="font-semibold text-white text-sm">Goals & Budgets</p>
+          <p class="text-xs text-slate-400">Set savings goals and track budgets automatically.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Right Panel — Signup Form -->
+<div class="flex-1 flex items-center justify-center p-8 overflow-y-auto">
+  <div class="w-full max-w-md slide-up py-8">
+
+    <!-- Mobile Logo -->
+    <div class="flex items-center justify-center gap-2 mb-8 lg:hidden">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:36px;width:36px;object-fit:contain;border-radius:8px;" onerror="this.style.display='none'">
+      <span style="font-size:22px;font-weight:800;color:#f8fafc;font-family:'Manrope',sans-serif;">SmartSpend AI</span>
+    </div>
+
+    <h1 class="text-3xl font-bold text-white mb-2" style="font-family:'Manrope',sans-serif;">Create account</h1>
+    <p class="text-slate-400 text-sm mb-8">Start tracking your finances for free today</p>
+
+    <!-- Error -->
+    <div id="errorMsg" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm mb-5 flex items-center gap-2">
+      <span class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">error</span>
+      <span id="errorText"></span>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-4">
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Full Name</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">person</span>
+          <input id="signupName" type="text" placeholder="Devanshu Goyal"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition-all"
+            onkeydown="if(event.key==='Enter') document.getElementById('signupEmail').focus()"/>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Email Address</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">mail</span>
+          <input id="signupEmail" type="email" placeholder="your@email.com"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition-all"
+            onkeydown="if(event.key==='Enter') document.getElementById('signupPassword').focus()"/>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Password</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">lock</span>
+          <input id="signupPassword" type="password" placeholder="Min. 6 characters"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-12 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition-all"
+            oninput="checkStrength(this.value)"
+            onkeydown="if(event.key==='Enter') document.getElementById('signupConfirm').focus()"/>
+          <button onclick="togglePass('signupPassword','eye1')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
+            <span id="eye1" class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">visibility</span>
+          </button>
+        </div>
+        <!-- Strength Meter -->
+        <div class="mt-2">
+          <div class="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
+            <div id="strengthBar" class="strength-bar h-full rounded-full w-0 bg-red-500"></div>
+          </div>
+          <p id="strengthText" class="text-xs text-slate-500 mt-1"></p>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Confirm Password</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">lock</span>
+          <input id="signupConfirm" type="password" placeholder="••••••••"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition-all"
+            onkeydown="if(event.key==='Enter') signup()"/>
+        </div>
+      </div>
+
+      <!-- Monthly Income (optional) -->
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Monthly Income (₹) <span class="text-slate-600 font-normal normal-case">— optional</span></label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">account_balance_wallet</span>
+          <input id="signupIncome" type="number" placeholder="45000"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 text-sm transition-all font-mono"/>
+        </div>
+        <p class="text-xs text-slate-500 mt-1">Helps AI give personalized insights</p>
+      </div>
+
+      <div class="flex items-start gap-2 pt-1">
+        <input id="terms" type="checkbox" class="rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-500 mt-0.5"/>
+        <label for="terms" class="text-sm text-slate-400 cursor-pointer leading-relaxed">
+          I agree to the <a href="#" class="text-indigo-400 hover:text-indigo-300">Terms of Service</a> and <a href="#" class="text-indigo-400 hover:text-indigo-300">Privacy Policy</a>
+        </label>
+      </div>
+
+      <button id="signupBtn" onclick="signup()"
+        class="w-full bg-[#6366f1] hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 mt-2">
+        <span id="signupBtnText">Create Free Account</span>
+        <span class="material-symbols-outlined" id="signupBtnIcon" style="font-size:18px;width:18px;height:18px;">arrow_forward</span>
+      </button>
+    </div>
+
+    <p class="text-center text-sm text-slate-400 mt-6">
+      Already have an account?
+      <a href="login.html" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">Sign in →</a>
+    </p>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  if (localStorage.getItem('smartspend_auth') === 'true') {
+    window.location.href = 'dashboard.html';
+  }
+});
+
+function checkStrength(pass) {
+  const bar  = document.getElementById('strengthBar');
+  const text = document.getElementById('strengthText');
+  if (!pass) { bar.style.width='0'; text.textContent=''; return; }
+
+  let score = 0;
+  if (pass.length >= 6)  score++;
+  if (pass.length >= 10) score++;
+  if (/[A-Z]/.test(pass)) score++;
+  if (/[0-9]/.test(pass)) score++;
+  if (/[^A-Za-z0-9]/.test(pass)) score++;
+
+  const levels = [
+    {pct:'20%', color:'#ef4444', label:'Too weak'},
+    {pct:'40%', color:'#f97316', label:'Weak'},
+    {pct:'60%', color:'#eab308', label:'Fair'},
+    {pct:'80%', color:'#22c55e', label:'Strong'},
+    {pct:'100%',color:'#4ade80', label:'Very strong'},
+  ];
+  const l = levels[Math.min(score-1, 4)] || levels[0];
+  bar.style.width = l.pct;
+  bar.style.backgroundColor = l.color;
+  text.textContent = l.label;
+  text.style.color = l.color;
+}
+
+function togglePass(id, iconId) {
+  const input = document.getElementById(id);
+  const icon  = document.getElementById(iconId);
+  input.type = input.type === 'password' ? 'text' : 'password';
+  icon.textContent = input.type === 'password' ? 'visibility' : 'visibility_off';
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  document.getElementById('errorText').textContent = msg;
+  el.classList.remove('hidden');
+  el.classList.add('flex');
+}
+
+function setLoading(loading) {
+  const btn  = document.getElementById('signupBtn');
+  const text = document.getElementById('signupBtnText');
+  const icon = document.getElementById('signupBtnIcon');
+  btn.disabled = loading;
+  btn.classList.toggle('opacity-70', loading);
+  text.textContent = loading ? 'Creating account...' : 'Create Free Account';
+  icon.textContent = loading ? 'hourglass_empty' : 'arrow_forward';
+}
+
+function signup() {
+  const name     = document.getElementById('signupName').value.trim();
+  const email    = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const confirm  = document.getElementById('signupConfirm').value;
+  const income   = parseFloat(document.getElementById('signupIncome').value) || 0;
+  const terms    = document.getElementById('terms').checked;
+
+  // Validation
+  if (!name)   { showError('Please enter your full name.'); return; }
+  if (!email || !email.includes('@')) { showError('Please enter a valid email.'); return; }
+  if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+  if (password !== confirm) { showError('Passwords do not match.'); return; }
+  if (!terms) { showError('Please accept the Terms of Service.'); return; }
+
+  // Check if email already exists
+  const users = JSON.parse(localStorage.getItem('smartspend_users') || '[]');
+  if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    showError('An account with this email already exists. Try logging in!'); return;
+  }
+
+  setLoading(true);
+
+  setTimeout(() => {
+    // Save user
+    const newUser = { name, email, password, createdAt: new Date().toISOString() };
+    users.push(newUser);
+    localStorage.setItem('smartspend_users', JSON.stringify(users));
+
+    // Auto login
+    localStorage.setItem('smartspend_auth', 'true');
+    localStorage.setItem('smartspend_user', JSON.stringify(newUser));
+
+    // Save settings + initial income transaction
+    localStorage.setItem('smartspend_settings', JSON.stringify({ name, email }));
+
+    // If income provided, add as first transaction
+    if (income > 0) {
+      const txns = JSON.parse(localStorage.getItem('smartspend_transactions') || '[]');
+      const today = new Date().toISOString().split('T')[0];
+      txns.push({
+        id: Date.now(),
+        date: today,
+        category: '💼 Salary',
+        desc: 'Monthly Salary',
+        method: 'Bank',
+        amount: income,
+        type: 'income'
+      });
+      localStorage.setItem('smartspend_transactions', JSON.stringify(txns));
+    }
+
+    window.location.href = 'dashboard.html';
+  }, 1000);
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | SmartSpend AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  body { background-color:#0f172a; color:#f8fafc; font-family:'Inter',sans-serif; }
+  .material-symbols-outlined {
+    font-family:'Material Symbols Outlined' !important;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-size:20px !important; line-height:1 !important;
+    display:inline-flex !important; align-items:center;
+    width:20px !important; height:20px !important;
+    overflow:hidden !important; flex-shrink:0;
+  }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .slide-up { animation:slideUp 0.4s ease forwards; }
+  .error-shake { animation:shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body class="min-h-screen flex">
+
+<!-- Left Panel — Branding -->
+<div class="hidden lg:flex w-1/2 bg-gradient-to-br from-indigo-900/40 via-slate-900 to-slate-900 flex-col items-center justify-center p-16 relative overflow-hidden">
+  <!-- Background blurs -->
+  <div class="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+  <div class="absolute bottom-0 right-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-[80px]"></div>
+
+  <div class="relative z-10 text-center">
+    <!-- Logo -->
+    <div class="flex items-center justify-center gap-3 mb-12">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:48px;width:48px;object-fit:contain;border-radius:10px;"
+        onerror="this.style.display='none'">
+      <span style="font-size:28px;font-weight:800;color:#f8fafc;font-family:'Manrope',sans-serif;">SmartSpend AI</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="space-y-6 mb-12">
+      <div class="bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 text-left">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-green-400" style="font-size:22px;width:22px;height:22px;">savings</span>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400">Average Monthly Savings</p>
+            <p class="text-2xl font-bold text-green-400">₹12,320</p>
+          </div>
+        </div>
+        <p class="text-xs text-slate-500">Users save 27% more with SmartSpend AI</p>
+      </div>
+
+      <div class="bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 text-left">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-indigo-400" style="font-size:22px;width:22px;height:22px;">smart_toy</span>
+          </div>
+          <div>
+            <p class="text-xs text-slate-400">AI-Powered Insights</p>
+            <p class="text-2xl font-bold text-indigo-400">10,000+</p>
+          </div>
+        </div>
+        <p class="text-xs text-slate-500">Active users tracking smarter</p>
+      </div>
+    </div>
+
+    <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
+      "SmartSpend AI helped me save ₹40,000 in 3 months. The AI insights are incredibly accurate!"
+    </p>
+    <p class="text-slate-500 text-xs mt-2">— Priya Sharma, Mumbai</p>
+  </div>
+</div>
+
+<!-- Right Panel — Login Form -->
+<div class="flex-1 flex items-center justify-center p-8">
+  <div class="w-full max-w-md slide-up">
+
+    <!-- Mobile Logo -->
+    <div class="flex items-center justify-center gap-2 mb-8 lg:hidden">
+      <img src="assets/logo.png" alt="SmartSpend AI" style="height:36px;width:36px;object-fit:contain;border-radius:8px;"
+        onerror="this.style.display='none'">
+      <span style="font-size:22px;font-weight:800;color:#f8fafc;font-family:'Manrope',sans-serif;">SmartSpend AI</span>
+    </div>
+
+    <h1 class="text-3xl font-bold text-white mb-2" style="font-family:'Manrope',sans-serif;">Welcome back</h1>
+    <p class="text-slate-400 text-sm mb-8">Sign in to your SmartSpend AI account</p>
+
+    <!-- Error Message -->
+    <div id="errorMsg" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm mb-6 flex items-center gap-2">
+      <span class="material-symbols-outlined text-red-400" style="font-size:18px;width:18px;height:18px;">error</span>
+      <span id="errorText">Invalid credentials</span>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-5">
+      <div>
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Email Address</label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">mail</span>
+          <input id="loginEmail" type="email" placeholder="devanshu@example.com"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm transition-all"
+            onkeydown="if(event.key==='Enter') document.getElementById('loginPassword').focus()"/>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+          <button onclick="showForgot()" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Forgot password?</button>
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">lock</span>
+          <input id="loginPassword" type="password" placeholder="••••••••"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-12 py-3.5 text-white outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm transition-all"
+            onkeydown="if(event.key==='Enter') login()"/>
+          <button onclick="togglePassword('loginPassword', 'eyeIcon')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+            <span id="eyeIcon" class="material-symbols-outlined" style="font-size:18px;width:18px;height:18px;">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input id="rememberMe" type="checkbox" class="rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-500"/>
+        <label for="rememberMe" class="text-sm text-slate-400 cursor-pointer">Remember me</label>
+      </div>
+
+      <button id="loginBtn" onclick="login()"
+        class="w-full bg-[#6366f1] hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+        <span id="loginBtnText">Sign In</span>
+        <span class="material-symbols-outlined" id="loginBtnIcon" style="font-size:18px;width:18px;height:18px;">arrow_forward</span>
+      </button>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-slate-700"></div>
+        <span class="text-xs text-slate-500 font-medium">OR CONTINUE WITH</span>
+        <div class="flex-1 h-px bg-slate-700"></div>
+      </div>
+
+      <!-- Demo Login -->
+      <button onclick="demoLogin()"
+        class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3.5 rounded-xl font-semibold text-sm transition-all border border-slate-700 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-indigo-400" style="font-size:18px;width:18px;height:18px;">play_circle</span>
+        Try Demo Account
+      </button>
+    </div>
+
+    <p class="text-center text-sm text-slate-400 mt-8">
+      Don't have an account?
+      <a href="signup.html" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">Sign up free →</a>
+    </p>
+
+    <p class="text-center text-xs text-slate-600 mt-4">
+      By signing in, you agree to our
+      <a href="#" class="text-slate-500 hover:text-slate-400">Terms</a> and
+      <a href="#" class="text-slate-500 hover:text-slate-400">Privacy Policy</a>
+    </p>
+  </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div id="forgotModal" class="hidden fixed inset-0 z-[100] bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center p-6">
+  <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-2xl p-8 shadow-2xl">
+    <h3 class="text-xl font-bold text-white mb-2">Reset Password</h3>
+    <p class="text-slate-400 text-sm mb-6">Enter your email to receive a reset link.</p>
+    <input id="forgotEmail" type="email" placeholder="your@email.com"
+      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 focus:ring-indigo-500 text-sm mb-4"/>
+    <div class="flex gap-3">
+      <button onclick="closeForgot()" class="flex-1 py-2.5 border border-slate-700 rounded-xl text-slate-400 text-sm font-semibold hover:bg-slate-700 transition-all">Cancel</button>
+      <button onclick="sendReset()" class="flex-1 py-2.5 bg-[#6366f1] rounded-xl text-white text-sm font-bold hover:bg-indigo-500 transition-all">Send Link</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// SmartSpend AI — Login Logic
+// Uses localStorage for simple auth
+// ============================================================
+
+// Check if already logged in
+window.addEventListener('load', () => {
+  if (localStorage.getItem('smartspend_auth') === 'true') {
+    window.location.href = 'dashboard.html';
+  }
+});
+
+function login() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const remember = document.getElementById('rememberMe').checked;
+
+  // Validation
+  if (!email) { showError('Please enter your email address.'); return; }
+  if (!password) { showError('Please enter your password.'); return; }
+  if (!email.includes('@')) { showError('Please enter a valid email address.'); return; }
+
+  // Check registered users
+  const users = JSON.parse(localStorage.getItem('smartspend_users') || '[]');
+  const user  = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+  // Loading state
+  setLoading(true);
+
+  setTimeout(() => {
+    if (user && user.password === password) {
+      // Valid registered user
+      loginSuccess(user, remember);
+    } else if (email === 'devanshu@example.com' && password === 'demo123') {
+      // Demo account
+      loginSuccess({ name:'Devanshu Goyal', email:'devanshu@example.com' }, remember);
+    } else if (users.length === 0 && password.length >= 6) {
+      // No users registered — create account automatically
+      const newUser = { name: email.split('@')[0], email, password };
+      localStorage.setItem('smartspend_users', JSON.stringify([newUser]));
+      loginSuccess(newUser, remember);
+    } else {
+      setLoading(false);
+      showError('Invalid email or password. Try the demo account!');
+      document.getElementById('loginPassword').value = '';
+    }
+  }, 800);
+}
+
+function demoLogin() {
+  document.getElementById('loginEmail').value = 'devanshu@example.com';
+  document.getElementById('loginPassword').value = 'demo123';
+  login();
+}
+
+function loginSuccess(user, remember) {
+  localStorage.setItem('smartspend_auth', 'true');
+  localStorage.setItem('smartspend_user', JSON.stringify(user));
+  if (remember) localStorage.setItem('smartspend_remember', 'true');
+
+  // Update settings with user info
+  const settings = JSON.parse(localStorage.getItem('smartspend_settings') || '{}');
+  settings.name  = user.name;
+  settings.email = user.email;
+  localStorage.setItem('smartspend_settings', JSON.stringify(settings));
+
+  window.location.href = 'dashboard.html';
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  document.getElementById('errorText').textContent = msg;
+  el.classList.remove('hidden');
+  el.classList.add('flex');
+  el.classList.add('error-shake');
+  setTimeout(() => el.classList.remove('error-shake'), 400);
+}
+
+function setLoading(loading) {
+  const btn  = document.getElementById('loginBtn');
+  const text = document.getElementById('loginBtnText');
+  const icon = document.getElementById('loginBtnIcon');
+  if (loading) {
+    btn.disabled = true;
+    btn.classList.add('opacity-70');
+    text.textContent = 'Signing in...';
+    icon.textContent = 'hourglass_empty';
+  } else {
+    btn.disabled = false;
+    btn.classList.remove('opacity-70');
+    text.textContent = 'Sign In';
+    icon.textContent = 'arrow_forward';
+  }
+}
+
+function togglePassword(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon  = document.getElementById(iconId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.textContent = 'visibility_off';
+  } else {
+    input.type = 'password';
+    icon.textContent = 'visibility';
+  }
+}
+
+function showForgot() {
+  document.getElementById('forgotEmail').value = document.getElementById('loginEmail').value;
+  document.getElementById('forgotModal').classList.remove('hidden');
+  document.getElementById('forgotModal').classList.add('flex');
+}
+function closeForgot() {
+  document.getElementById('forgotModal').classList.add('hidden');
+  document.getElementById('forgotModal').classList.remove('flex');
+}
+function sendReset() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email || !email.includes('@')) { alert('Enter a valid email!'); return; }
+  closeForgot();
+  alert(`Password reset link sent to ${email}! (Demo: check console)`);
+  console.log(`[SmartSpend AI] Password reset requested for: ${email}`);
+}
+
+// Close modal on backdrop
+document.getElementById('forgotModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('forgotModal')) closeForgot();
+});
+</script>
+<script src="auth.js"></script>
+</body>
+</html>
